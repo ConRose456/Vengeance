@@ -46,7 +46,7 @@ class GameEngine extends JPanel implements Runnable, GameEngineBroadcaster, Engi
 		
 		this.mHud = new HUD(new Point(WIDTH, HEIGHT));
 		this.mLevelManager = new LevelManager(this, mRenderer.getPixelsPerMetre());
-		this.mUIController = new UIController(this, new Point(WIDTH, HEIGHT));
+		this.mUIController = new UIController(this, mHud, new Point(WIDTH, HEIGHT));
 		
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.setFocusable(true);

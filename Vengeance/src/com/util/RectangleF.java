@@ -74,6 +74,10 @@ public class RectangleF {
         return contains(p.x, p.y);
     }
 	
+	public boolean contains(Point p) {
+        return contains(p.x, p.y);
+    }
+	
 	public boolean contains(float x, float y) {
         return inside(x, y);
     }
