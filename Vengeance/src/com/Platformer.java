@@ -11,7 +11,7 @@ class Platformer {
 	private GameEngine mGameEngine = null;
 	
 	private Platformer() {
-		mFrame = new JFrame("Platformer");
+		mFrame = new JFrame("Vengeance");
 		mGameEngine = new GameEngine();
 		
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

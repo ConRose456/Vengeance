@@ -81,7 +81,7 @@ final class HUD {
 			
 			g.setColor(new Color(255, 255, 255, 255));
 			
-			String titleText = "Platformer";
+			String titleText = "Vengeance";
 			g.setFont(new Font("Arial", Font.PLAIN, 36));
 			int titleTextWidth = g.getFontMetrics().stringWidth(titleText);
 			
