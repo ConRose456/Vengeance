@@ -10,6 +10,7 @@ final class GameState {
 	private EngineController mEngineController;
 	
 	private static volatile boolean mLevelMenu = false;
+	private static volatile boolean mOptionsMenu = false;
 	
 	private SoundEngine mSoundEngine = null;
 	
@@ -124,5 +125,13 @@ final class GameState {
 	
 	boolean getLevelMenu() {
 		return mLevelMenu;
+	}
+	
+	void flipOptionsMenu() {
+		mOptionsMenu = !mOptionsMenu;
+	}
+	
+	boolean getOptionsMenu() {
+		return mOptionsMenu;
 	}
 }

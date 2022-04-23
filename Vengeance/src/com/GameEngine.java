@@ -152,11 +152,11 @@ class GameEngine extends JPanel implements Runnable, GameEngineBroadcaster, Engi
 			input.handleMouseInput(location, mGameState);
 		}
 	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {}
+	
 	@Override
 	public void mousePressed(MouseEvent e) {}
+	@Override
+	public void keyTyped(KeyEvent e) {}
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 	@Override

@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -36,7 +37,7 @@ final class HUD {
 	private final int mCoinBufferHorizontal = 18;
 	private final int mCoinBufferVertical = 33;
 	
-	private RectangleF mLevelMenuButton = new RectangleF();
+	private RectangleF mLevelMenuButton;
 	
 	private int mMainMenu_LevelMenuButtonSize;
 	private int mMainMenu_LevelMenuButton_x;
@@ -50,7 +51,21 @@ final class HUD {
 	private int mLevelMenuButtonVerticalBuffer;
 	private int mLevelMenuButtonHorizontalBuffer;
 	
-	private RectangleF mLevelMenuBackButton = new RectangleF();
+	private RectangleF mLevelMenuBackButton;
+	private RectangleF mOptionsMenuBackButton;
+	
+	private int mPauseMenuButtonWidth;
+	private int mPauseMenuButtonHeight;
+	private int mPauseMenuButtonVerticalButtonBuffer_initial;
+	private int mPauseMenuButtonHorizontalButtonBuffer_initial;
+	private int mPauseMenuButtonVerticalButtonBuffer;
+	
+	private String mCurrentPauseButtonHover;
+	
+	private HashMap<String, RectangleF> mPauseMenuButtonMap = new HashMap<>();
+	private RectangleF mPauseMenu_ResumeButton;
+	private RectangleF mPauseMenu_OptionsButton;
+	private RectangleF mPauseMenu_ExitButton;
 	
 	HUD(Point screenSize) {
 		this.mScreenWidth = screenSize.x;
@@ -91,6 +106,12 @@ final class HUD {
 				mMainMenu_LevelMenuButtonSize,
 				mMainMenu_LevelMenuButtonSize);
 		
+		this.mOptionsMenuBackButton = new RectangleF(
+				mMainMenu_LevelMenuButton_x,
+				mMainMenu_LevelMenuButton_y + (mMainMenu_LevelMenuButtonSize / 5),
+				mMainMenu_LevelMenuButtonSize,
+				mMainMenu_LevelMenuButtonSize);
+		
 		this.mLevelMenuButtonSize = (int)(mScreenWidth * 0.05f);
 		this.mLevelMenuButtonVerticalBuffer_initial = (int)(mScreenHeight * .2f);
 		this.mLevelMenuButtonHorizontalBuffer_initial = (int)(mScreenWidth * .15f);
@@ -107,7 +128,32 @@ final class HUD {
 			}
 			
 		}
-				
+		
+		this.mPauseMenuButtonWidth = (int)(mScreenWidth * 0.4f);
+		this.mPauseMenuButtonHeight = (int)(mScreenHeight * 0.05f);
+		this.mPauseMenuButtonVerticalButtonBuffer_initial = (int)(mScreenHeight * 0.36f);
+		this.mPauseMenuButtonHorizontalButtonBuffer_initial = (int)(mScreenWidth * 0.060f);
+		this.mPauseMenuButtonVerticalButtonBuffer = (int)(mScreenHeight * 0.08f);
+		
+		this.mPauseMenu_ResumeButton = new RectangleF(
+				mPauseMenuButtonHorizontalButtonBuffer_initial,
+				mPauseMenuButtonVerticalButtonBuffer_initial,
+				mPauseMenuButtonWidth,
+				mPauseMenuButtonHeight);
+		this.mPauseMenu_OptionsButton = new RectangleF(
+				mPauseMenuButtonHorizontalButtonBuffer_initial,
+				mPauseMenuButtonVerticalButtonBuffer_initial + mPauseMenuButtonVerticalButtonBuffer,
+				mPauseMenuButtonWidth,
+				mPauseMenuButtonHeight);
+		this.mPauseMenu_ExitButton = new RectangleF(
+				mPauseMenuButtonHorizontalButtonBuffer_initial,
+				mPauseMenuButtonVerticalButtonBuffer_initial + (mPauseMenuButtonVerticalButtonBuffer * 2),
+				mPauseMenuButtonWidth,
+				mPauseMenuButtonHeight);
+		
+		this.mPauseMenuButtonMap.put("Resume", mPauseMenu_ResumeButton);
+		this.mPauseMenuButtonMap.put("Options", mPauseMenu_OptionsButton);
+		this.mPauseMenuButtonMap.put("Exit", mPauseMenu_ExitButton);
 	}
 	
 	void draw(Graphics g, GameState gs) {
@@ -134,6 +180,9 @@ final class HUD {
 		
 		if (gs.getLevelMenu()) {
 			drawLevelMenu(g, gs);
+		}
+		if (gs.getOptionsMenu()) {
+			drawOptionsMenu(g, gs);
 		}
 	}	
 	
@@ -176,10 +225,18 @@ final class HUD {
 		g.setFont(new Font("Arial", Font.PLAIN, 36));
 		g.drawString(pauseTitleText, mPauseMenuHorizontalBuffer, mPauseMenuVerticalBuffer);
 		
+		GradientPaint pauseButtonGradient = new GradientPaint(10, 10, new Color(200, 200, 200, 100), 
+				mPauseMenu_ResumeButton.width, mPauseMenu_ResumeButton.height, new Color(0, 0, 0, 0));
+		g2d.setPaint(pauseButtonGradient);
+		g2d.fillRect((int)mPauseMenu_ResumeButton.x, (int)mPauseMenu_ResumeButton.y, (int)mPauseMenu_ResumeButton.width, (int)mPauseMenu_ResumeButton.height);
+		g2d.fillRect((int)mPauseMenu_OptionsButton.x, (int)mPauseMenu_OptionsButton.y, (int)mPauseMenu_OptionsButton.width, (int)mPauseMenu_OptionsButton.height);
+		g2d.fillRect((int)mPauseMenu_ExitButton.x, (int)mPauseMenu_ExitButton.y, (int)mPauseMenu_ExitButton.width, (int)mPauseMenu_ExitButton.height);
+		
 		String resumeText = "Resume";
 		String optionsText = "Options";
 		String exitGameText = "Exit";
 		g.setFont(new Font("Arial", Font.PLAIN, 20));
+		g.setColor(new Color(255, 255, 255, 255));
 		g.drawString(resumeText, mPauseMenuHorizontalBuffer, 
 				mPauseMenuVerticalBuffer + mPauseMenuBuffer + g.getFont().getSize());
 		g.drawString(optionsText, mPauseMenuHorizontalBuffer, 
@@ -230,12 +287,44 @@ final class HUD {
 				mMenuBuffer * 9 + (mCurrencyBitmap.getWidth(null) + 5), mCoinBufferVertical);
 	}
 	
+	private void drawOptionsMenu(Graphics g, GameState gs) {
+		g.drawImage(mMenuBitmap, 0, 0, mScreenWidth, mScreenHeight, null);
+		
+		g.setColor(new Color(255, 255, 255, 255));
+		String titleText = "Options";
+		g.setFont(new Font("Arial", Font.PLAIN, 36));
+		int titleTextWidth = g.getFontMetrics().stringWidth(titleText);
+		
+		g.drawString(titleText, (mScreenWidth / 2) - (titleTextWidth / 2), g.getFont().getSize());
+		
+		g.setColor(new Color(0, 0, 0, 100));
+		g.fillRect(
+				(int)mLevelMenuBackButton.x, 
+				(int)mLevelMenuBackButton.y, 
+				(int)mLevelMenuBackButton.width,
+				(int)mLevelMenuBackButton.height);
+		
+		g.setColor(new Color(255, 255, 255, 255));
+		g.setFont(new Font("Arial", Font.PLAIN, 18));
+		g.drawImage(mCurrencyBitmap, mMenuBuffer * 9, mCoinBufferHorizontal, null);
+		g.drawString("" + gs.getCoinsCollected(), 
+				mMenuBuffer * 9 + (mCurrencyBitmap.getWidth(null) + 5), mCoinBufferVertical);
+	}
+	
+	public HashMap<String, RectangleF> getPauseMenuButtons() {
+		return mPauseMenuButtonMap;
+	}
+	
 	public RectangleF getMainMenu_LevelButton() {
 		return mLevelMenuButton;
 	}
 	
 	public RectangleF getLevelMenuBackButton() {
 		return mLevelMenuBackButton;
+	}
+	
+	public RectangleF getOptionsMenuBackButton() {
+		return mOptionsMenuBackButton;
 	}
 	
 	public ArrayList<RectangleF> getLevelButtons() {

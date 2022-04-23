@@ -36,9 +36,6 @@ class UIController implements InputObserver {
 				gs.setCurrentLevel(2);
 				gs.startNewGame();
 			}
-			if (key == KeyEvent.VK_L) {
-				gs.flipLevelMenu();
-			}
 		} else if (!gs.isGameOver() && gs.isPaused()) {
 			if (key == KeyEvent.VK_S) {
 				gs.death();
@@ -62,6 +59,16 @@ class UIController implements InputObserver {
 				gs.setCurrentLevel(2);
 				gs.startNewGame();
 			}
+		} else if (!gs.isGameOver() && gs.isPaused()) {
+			if (mHud.getPauseMenuButtons().get("Resume").contains(location)) {
+				gs.flipPaused();
+			}
+			if (mHud.getPauseMenuButtons().get("Options").contains(location)) {
+				gs.flipOptionsMenu();
+			}
+			if (mHud.getPauseMenuButtons().get("Exit").contains(location)) {
+				gs.death();
+			}
 		}
 		
 		if (gs.getLevelMenu()) {
@@ -75,6 +82,12 @@ class UIController implements InputObserver {
 			
 			if (mHud.getLevelMenuBackButton().contains(location)) {
 				gs.flipLevelMenu();
+			}
+		}
+		
+		if (gs.getOptionsMenu()) {
+			if (mHud.getOptionsMenuBackButton().contains(location)) {
+				gs.flipOptionsMenu();
 			}
 		}
 	}
