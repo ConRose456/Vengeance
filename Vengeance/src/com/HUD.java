@@ -38,6 +38,7 @@ final class HUD {
 	private final int mCoinBufferVertical = 33;
 	
 	private RectangleF mLevelMenuButton;
+	private RectangleF mOptionsMenuButton;
 	
 	private int mMainMenu_LevelMenuButtonSize;
 	private int mMainMenu_LevelMenuButton_x;
@@ -96,6 +97,11 @@ final class HUD {
 		
 		this.mLevelMenuButton = new RectangleF(
 				mMainMenu_LevelMenuButton_x,
+				mScreenHeight - mMainMenu_LevelMenuButton_y - mMainMenu_LevelMenuButtonSize,
+				mMainMenu_LevelMenuButtonSize,
+				mMainMenu_LevelMenuButtonSize);
+		
+		this.mOptionsMenuButton = new RectangleF(mScreenWidth - mMainMenu_LevelMenuButton_x - mMainMenu_LevelMenuButtonSize,
 				mScreenHeight - mMainMenu_LevelMenuButton_y - mMainMenu_LevelMenuButtonSize,
 				mMainMenu_LevelMenuButtonSize,
 				mMainMenu_LevelMenuButtonSize);
@@ -211,6 +217,9 @@ final class HUD {
 		
 		g.setColor(new Color(0, 0, 0, 100));
 		g.fillRect((int)mLevelMenuButton.x, (int)mLevelMenuButton.y, (int)mLevelMenuButton.width, (int)mLevelMenuButton.height);
+		
+		g.setColor(new Color(0, 0, 0, 100));
+		g.fillRect((int)mOptionsMenuButton.x, (int)mOptionsMenuButton.y, (int)mOptionsMenuButton.width, (int)mOptionsMenuButton.height);
 	}
 	
 	private void drawPauseMenu(Graphics g, Graphics2D g2d) {
@@ -317,6 +326,10 @@ final class HUD {
 	
 	public RectangleF getMainMenu_LevelButton() {
 		return mLevelMenuButton;
+	}
+	
+	public RectangleF getMainMenu_OptionsButton() {
+		return mOptionsMenuButton;
 	}
 	
 	public RectangleF getLevelMenuBackButton() {

@@ -52,9 +52,11 @@ class UIController implements InputObserver {
 	@Override
 	public void handleMouseInput(Point location, GameState gs) {
 		
-		if (gs.isPaused() && gs.isGameOver() && !gs.getLevelMenu()) {
+		if (gs.isPaused() && gs.isGameOver() && !gs.getLevelMenu() && !gs.getOptionsMenu()) {
 			if (mHud.getMainMenu_LevelButton().contains(location)) {
 				gs.flipLevelMenu();
+			} else if (mHud.getMainMenu_OptionsButton().contains(location)) {
+				gs.flipOptionsMenu();
 			} else {
 				gs.setCurrentLevel(2);
 				gs.startNewGame();
