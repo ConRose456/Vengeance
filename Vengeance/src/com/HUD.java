@@ -31,6 +31,10 @@ final class HUD {
 	private Image mLevelMenuButtonBitmap;
 	private Image mOptionsMenuButtonBitmap;
 	
+	private Image mLevelMenuBackgroundBitmap;
+	
+	private ArrayList<Image> mLevelButtons = new ArrayList<>();
+	
 	private int mMenuBuffer;
 	
 	private int mPauseMenuVerticalBuffer;
@@ -88,7 +92,8 @@ final class HUD {
 			mBackButtonBitmap = ImageIO.read(new File(path + "/UI/BackButton.png"));;
 			mPauseButtonBitmap = ImageIO.read(new File(path + "/UI/PauseButton.png"));;
 			mLevelMenuButtonBitmap = ImageIO.read(new File(path + "/UI/LevelMenuButton.png"));;
-			mOptionsMenuButtonBitmap = ImageIO.read(new File(path + "/UI/OptionsMenuButton.png"));;
+			mOptionsMenuButtonBitmap = ImageIO.read(new File(path + "/UI/OptionsMenuButton.png"));
+			mLevelMenuBackgroundBitmap = ImageIO.read(new File(path + "/UI/LevelMenuBackground.png"));
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
@@ -138,6 +143,14 @@ final class HUD {
 		this.mLevelMenuButtonHorizontalBuffer_initial = (int)(mScreenWidth * .15f);
 		this.mLevelMenuButtonVerticalBuffer = (int)((mScreenHeight - (mLevelMenuButtonVerticalBuffer_initial * 2)) / 3);
 		this.mLevelMenuButtonHorizontalBuffer = (int)((mScreenWidth - (mLevelMenuButtonHorizontalBuffer_initial * 2)) / 5);
+		
+		try {
+			mLevelButtons.add(ImageIO.read(new File(path + "/UI/LevelOneButton.png")));
+			mLevelButtons.add(ImageIO.read(new File(path + "/UI/LevelTwoButton.png")));
+			mLevelButtons.add(ImageIO.read(new File(path + "/UI/LevelThreeButton.png")));
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
 		
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 5; j++) {
@@ -298,6 +311,9 @@ final class HUD {
 	
 	private void drawLevelMenu(Graphics g, GameState gs) {
 		g.drawImage(mMenuBitmap, 0, 0, mScreenWidth, mScreenHeight, null);
+		g.drawImage(mLevelMenuBackgroundBitmap, 
+				(int)(mScreenWidth * 0.094f), (int)(mScreenHeight * 0.22f), 
+				(int)(mScreenWidth * 0.81f), (int)(mScreenHeight * 0.72f), null);
 		
 		g.setColor(new Color(255, 255, 255, 255));
 		String titleText = "Levels";
@@ -307,8 +323,15 @@ final class HUD {
 		g.drawString(titleText, (mScreenWidth / 2) - (titleTextWidth / 2), g.getFont().getSize());
 		
 		g.setColor(new Color(0 ,0, 0, 100));
+		int i = 0;
 		for (RectangleF button : mLevelMenuButtons) {
-			g.fillRect((int)button.x, (int)button.y, (int)button.width, (int)button.height);
+			
+			if (i <= mLevelButtons.size() - 1) {
+				g.drawImage(mLevelButtons.get(i), (int)button.x, (int)button.y, (int)button.width, (int)button.height, null);
+			} else {
+				g.fillRect((int)button.x, (int)button.y, (int)button.width, (int)button.height);
+			}
+			i++;
 		}
 	
 		g.drawImage(mBackButtonBitmap, 
@@ -326,6 +349,9 @@ final class HUD {
 	
 	private void drawOptionsMenu(Graphics g, GameState gs) {
 		g.drawImage(mMenuBitmap, 0, 0, mScreenWidth, mScreenHeight, null);
+		g.drawImage(mLevelMenuBackgroundBitmap, 
+				(int)(mScreenWidth * 0.094f), (int)(mScreenHeight * 0.22f), 
+				(int)(mScreenWidth * 0.81f), (int)(mScreenHeight * 0.72f), null);
 		
 		g.setColor(new Color(255, 255, 255, 255));
 		String titleText = "Options";

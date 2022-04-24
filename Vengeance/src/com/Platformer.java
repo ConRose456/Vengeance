@@ -1,8 +1,11 @@
 package com;
 
 import java.awt.BorderLayout;
-import java.net.MalformedURLException;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 class Platformer {
@@ -10,10 +13,26 @@ class Platformer {
 	private JFrame mFrame = null;
 	private GameEngine mGameEngine = null;
 	
-	private Platformer() {
+	private Platformer() throws IOException {
 		mFrame = new JFrame("Vengeance");
 		mGameEngine = new GameEngine();
 		
+		String path = System.getProperty("user.dir") + "/res/images/UI/PlayerIcon.png";
+		Image playerIcon = ImageIO.read(new File(path));
+		mFrame.setIconImage(playerIcon);
+		
+		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mFrame.setResizable(false);
+		
+		__init__();
+	}
+	
+	private Platformer(IOException e) {
+		e.printStackTrace();
+		
+		mFrame = new JFrame("Vengeance");
+		mGameEngine = new GameEngine();
+
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mFrame.setResizable(false);
 		
@@ -31,7 +50,11 @@ class Platformer {
 	}
 	
 	public static void main(String[] args) {
-		new Platformer();
+		try {
+			new Platformer();
+		} catch (IOException e) {
+			new Platformer(e);
+		}
 	}
 	
 }
