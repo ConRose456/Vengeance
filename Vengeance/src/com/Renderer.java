@@ -36,7 +36,6 @@ class Renderer {
 				mCamera.setWorldYCentre(objects.get(LevelManager.PLAYER_INDEX).getTransform().getLocation());
 			}
 			
-			
 			for (GameObject object : objects) {
 				if (object.checkActive()) {
 					if (object.getTag() != "Player") {

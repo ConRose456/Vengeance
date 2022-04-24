@@ -40,6 +40,9 @@ class UIController implements InputObserver {
 			if (key == KeyEvent.VK_S) {
 				gs.death();
 			}
+			if (key == KeyEvent.VK_ESCAPE) {
+				gs.flipPaused();
+			}
 		} else if (!gs.isGameOver()) {
 			if (key == KeyEvent.VK_ESCAPE) {
 				gs.flipPaused();
