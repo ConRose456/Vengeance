@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.GOSpecs.*;
 import com.Levels.Level;
 import com.Levels.LevelOne;
+import com.Levels.LevelThree;
 import com.Levels.LevelTwo;
 import com.util.PointF;
 
@@ -21,10 +22,16 @@ final class LevelManager {
 	}
 	
 	void setCurrentLevel(int level) {
-		if (level == 1 ) {
+		switch (level) {
+		case 1:
 			currentLevel = new LevelOne();
-		} else if (level == 2) {
+			break;
+		case 2:
 			currentLevel = new LevelTwo();
+			break;
+		case 3:
+			currentLevel = new LevelThree();
+			break;
 		}
 	}
 	

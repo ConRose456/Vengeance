@@ -17,6 +17,7 @@ final class GameState {
 	private long mStartTimeInMillis;
 	
 	private int mCoinsCollected;
+	private int mTotalCoins;
 	
 	private int mCurrentLevel = 2;
 	
@@ -53,8 +54,13 @@ final class GameState {
 		return mCoinsCollected;
 	}
 	
+	int getTotalCoins() {
+		return mTotalCoins;
+	}
+	
 	void coinCollected() {
 		mCoinsCollected++;
+		mTotalCoins++;
 	}
 	
 	void startEverything() {

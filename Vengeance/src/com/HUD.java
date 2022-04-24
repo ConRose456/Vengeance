@@ -212,7 +212,7 @@ final class HUD {
 		
 		g.setFont(new Font("Arial", Font.PLAIN, 18));
 		g.drawImage(mCurrencyBitmap, mMenuBuffer * 9, mCoinBufferHorizontal, null);
-		g.drawString("" + gs.getCoinsCollected(), 
+		g.drawString("" + gs.getTotalCoins(), 
 				mMenuBuffer * 9 + (mCurrencyBitmap.getWidth(null) + 5), mCoinBufferVertical);
 		
 		g.setColor(new Color(0, 0, 0, 100));
@@ -292,7 +292,7 @@ final class HUD {
 		g.setColor(new Color(255, 255, 255, 255));
 		g.setFont(new Font("Arial", Font.PLAIN, 18));
 		g.drawImage(mCurrencyBitmap, mMenuBuffer * 9, mCoinBufferHorizontal, null);
-		g.drawString("" + gs.getCoinsCollected(), 
+		g.drawString("" + gs.getTotalCoins(), 
 				mMenuBuffer * 9 + (mCurrencyBitmap.getWidth(null) + 5), mCoinBufferVertical);
 	}
 	
@@ -316,7 +316,7 @@ final class HUD {
 		g.setColor(new Color(255, 255, 255, 255));
 		g.setFont(new Font("Arial", Font.PLAIN, 18));
 		g.drawImage(mCurrencyBitmap, mMenuBuffer * 9, mCoinBufferHorizontal, null);
-		g.drawString("" + gs.getCoinsCollected(), 
+		g.drawString("" + gs.getTotalCoins(), 
 				mMenuBuffer * 9 + (mCurrencyBitmap.getWidth(null) + 5), mCoinBufferVertical);
 	}
 	
