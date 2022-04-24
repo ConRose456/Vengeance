@@ -26,6 +26,11 @@ final class HUD {
 	private Image mTitleBitmap;
 	private Image mCurrencyBitmap;
 	
+	private Image mBackButtonBitmap;
+	private Image mPauseButtonBitmap;
+	private Image mLevelMenuButtonBitmap;
+	private Image mOptionsMenuButtonBitmap;
+	
 	private int mMenuBuffer;
 	
 	private int mPauseMenuVerticalBuffer;
@@ -46,25 +51,25 @@ final class HUD {
 	
 	private ArrayList<RectangleF> mLevelMenuButtons = new ArrayList<>();
 	
+	private RectangleF mLevelMenuBackButton;
+	private RectangleF mOptionsMenuBackButton;
+	
 	private int mLevelMenuButtonSize;
 	private int mLevelMenuButtonVerticalBuffer_initial;
 	private int mLevelMenuButtonHorizontalBuffer_initial;
 	private int mLevelMenuButtonVerticalBuffer;
 	private int mLevelMenuButtonHorizontalBuffer;
 	
-	private RectangleF mLevelMenuBackButton;
-	private RectangleF mOptionsMenuBackButton;
+	private HashMap<String, RectangleF> mPauseMenuButtonMap = new HashMap<>();
+	private RectangleF mPauseMenu_ResumeButton;
+	private RectangleF mPauseMenu_OptionsButton;
+	private RectangleF mPauseMenu_ExitButton;
 	
 	private int mPauseMenuButtonWidth;
 	private int mPauseMenuButtonHeight;
 	private int mPauseMenuButtonVerticalButtonBuffer_initial;
 	private int mPauseMenuButtonHorizontalButtonBuffer_initial;
 	private int mPauseMenuButtonVerticalButtonBuffer;
-	
-	private HashMap<String, RectangleF> mPauseMenuButtonMap = new HashMap<>();
-	private RectangleF mPauseMenu_ResumeButton;
-	private RectangleF mPauseMenu_OptionsButton;
-	private RectangleF mPauseMenu_ExitButton;
 	
 	private RectangleF mInGamePauseButton;
 	
@@ -80,6 +85,10 @@ final class HUD {
 			mMenuBitmap = ImageIO.read(new File(path + "/background.png"));
 			//mTitleBitmap  = ImageIO.read(new File(path + "/title_image.png"));
 			mCurrencyBitmap = ImageIO.read(new File(path + "/coin_icon.png"));
+			mBackButtonBitmap = ImageIO.read(new File(path + "/UI/BackButton.png"));;
+			mPauseButtonBitmap = ImageIO.read(new File(path + "/UI/PauseButton.png"));;
+			mLevelMenuButtonBitmap = ImageIO.read(new File(path + "/UI/LevelMenuButton.png"));;
+			mOptionsMenuButtonBitmap = ImageIO.read(new File(path + "/UI/OptionsMenuButton.png"));;
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
@@ -125,7 +134,7 @@ final class HUD {
 				mMainMenu_LevelMenuButtonSize);
 		
 		this.mLevelMenuButtonSize = (int)(mScreenWidth * 0.05f);
-		this.mLevelMenuButtonVerticalBuffer_initial = (int)(mScreenHeight * .2f);
+		this.mLevelMenuButtonVerticalBuffer_initial = (int)(mScreenHeight * .25f);
 		this.mLevelMenuButtonHorizontalBuffer_initial = (int)(mScreenWidth * .15f);
 		this.mLevelMenuButtonVerticalBuffer = (int)((mScreenHeight - (mLevelMenuButtonVerticalBuffer_initial * 2)) / 3);
 		this.mLevelMenuButtonHorizontalBuffer = (int)((mScreenWidth - (mLevelMenuButtonHorizontalBuffer_initial * 2)) / 5);
@@ -134,11 +143,10 @@ final class HUD {
 			for (int j = 0; j < 5; j++) {
 				this.mLevelMenuButtons.add(new RectangleF(
 					(mLevelMenuButtonHorizontalBuffer_initial + (mLevelMenuButtonHorizontalBuffer * j) + (mLevelMenuButtonSize / 2) * j), 
-					mLevelMenuButtonVerticalBuffer_initial + (mLevelMenuButtonVerticalBuffer * i - (mLevelMenuButtonSize / 2) * i),
+					mLevelMenuButtonVerticalBuffer_initial + (mLevelMenuButtonVerticalBuffer * i) + (mLevelMenuButtonSize / 2),
 					mLevelMenuButtonSize,
 					mLevelMenuButtonSize));
 			}
-			
 		}
 		
 		this.mPauseMenuButtonWidth = (int)(mScreenWidth * 0.4f);
@@ -183,12 +191,13 @@ final class HUD {
 				drawPauseMenu(g, g2d);
 			}
 			
-			g.setColor(new Color(0, 0, 0, 100));
-			g.fillRect(
+			if (!gs.isPaused()) {
+				g.drawImage(mPauseButtonBitmap, 
 					(int)mInGamePauseButton.x, 
 					(int)mInGamePauseButton.y, 
-					(int)mInGamePauseButton.width,
-					(int)mInGamePauseButton.height);
+					(int)mInGamePauseButton.width, 
+					(int)mInGamePauseButton.height, null);
+			}
 			
 			g.setColor(new Color(255, 255, 255, 255));
 			g.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -228,11 +237,17 @@ final class HUD {
 		g.drawString("" + gs.getTotalCoins(), 
 				mMenuBuffer * 9 + (mCurrencyBitmap.getWidth(null) + 5), mCoinBufferVertical);
 		
-		g.setColor(new Color(0, 0, 0, 100));
-		g.fillRect((int)mLevelMenuButton.x, (int)mLevelMenuButton.y, (int)mLevelMenuButton.width, (int)mLevelMenuButton.height);
-		
-		g.setColor(new Color(0, 0, 0, 100));
-		g.fillRect((int)mOptionsMenuButton.x, (int)mOptionsMenuButton.y, (int)mOptionsMenuButton.width, (int)mOptionsMenuButton.height);
+		g.drawImage(mLevelMenuButtonBitmap,
+				(int)mLevelMenuButton.x, 
+				(int)mLevelMenuButton.y, 
+				(int)mLevelMenuButton.width, 
+				(int)mLevelMenuButton.height, null);
+
+		g.drawImage(mOptionsMenuButtonBitmap, 
+				(int)mOptionsMenuButton.x, 
+				(int)mOptionsMenuButton.y, 
+				(int)mOptionsMenuButton.width, 
+				(int)mOptionsMenuButton.height, null);
 	}
 	
 	private void drawPauseMenu(Graphics g, Graphics2D g2d) {
@@ -295,12 +310,12 @@ final class HUD {
 		for (RectangleF button : mLevelMenuButtons) {
 			g.fillRect((int)button.x, (int)button.y, (int)button.width, (int)button.height);
 		}
-		
-		g.fillRect(
+	
+		g.drawImage(mBackButtonBitmap, 
 				(int)mLevelMenuBackButton.x, 
 				(int)mLevelMenuBackButton.y, 
 				(int)mLevelMenuBackButton.width,
-				(int)mLevelMenuBackButton.height);
+				(int)mLevelMenuBackButton.height, null);
 		
 		g.setColor(new Color(255, 255, 255, 255));
 		g.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -319,12 +334,11 @@ final class HUD {
 		
 		g.drawString(titleText, (mScreenWidth / 2) - (titleTextWidth / 2), g.getFont().getSize());
 		
-		g.setColor(new Color(0, 0, 0, 100));
-		g.fillRect(
+		g.drawImage(mBackButtonBitmap, 
 				(int)mLevelMenuBackButton.x, 
 				(int)mLevelMenuBackButton.y, 
 				(int)mLevelMenuBackButton.width,
-				(int)mLevelMenuBackButton.height);
+				(int)mLevelMenuBackButton.height, null);
 		
 		g.setColor(new Color(255, 255, 255, 255));
 		g.setFont(new Font("Arial", Font.PLAIN, 18));
