@@ -61,12 +61,12 @@ final class HUD {
 	private int mPauseMenuButtonHorizontalButtonBuffer_initial;
 	private int mPauseMenuButtonVerticalButtonBuffer;
 	
-	private String mCurrentPauseButtonHover;
-	
 	private HashMap<String, RectangleF> mPauseMenuButtonMap = new HashMap<>();
 	private RectangleF mPauseMenu_ResumeButton;
 	private RectangleF mPauseMenu_OptionsButton;
 	private RectangleF mPauseMenu_ExitButton;
+	
+	private RectangleF mInGamePauseButton;
 	
 	HUD(Point screenSize) {
 		this.mScreenWidth = screenSize.x;
@@ -113,6 +113,12 @@ final class HUD {
 				mMainMenu_LevelMenuButtonSize);
 		
 		this.mOptionsMenuBackButton = new RectangleF(
+				mMainMenu_LevelMenuButton_x,
+				mMainMenu_LevelMenuButton_y + (mMainMenu_LevelMenuButtonSize / 5),
+				mMainMenu_LevelMenuButtonSize,
+				mMainMenu_LevelMenuButtonSize);
+	
+		this.mInGamePauseButton = new RectangleF(
 				mMainMenu_LevelMenuButton_x,
 				mMainMenu_LevelMenuButton_y + (mMainMenu_LevelMenuButtonSize / 5),
 				mMainMenu_LevelMenuButtonSize,
@@ -176,6 +182,13 @@ final class HUD {
 			if (gs.isPaused()) {
 				drawPauseMenu(g, g2d);
 			}
+			
+			g.setColor(new Color(0, 0, 0, 100));
+			g.fillRect(
+					(int)mInGamePauseButton.x, 
+					(int)mInGamePauseButton.y, 
+					(int)mInGamePauseButton.width,
+					(int)mInGamePauseButton.height);
 			
 			g.setColor(new Color(255, 255, 255, 255));
 			g.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -338,6 +351,10 @@ final class HUD {
 	
 	public RectangleF getOptionsMenuBackButton() {
 		return mOptionsMenuBackButton;
+	}
+	
+	public RectangleF getInGamePauseButton() {
+		return mInGamePauseButton;
 	}
 	
 	public ArrayList<RectangleF> getLevelButtons() {

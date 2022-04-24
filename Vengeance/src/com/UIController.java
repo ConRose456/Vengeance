@@ -74,6 +74,10 @@ class UIController implements InputObserver {
 			if (mHud.getPauseMenuButtons().get("Exit").contains(location)) {
 				gs.death();
 			}
+		} else if (!gs.isGameOver() && !gs.isPaused()) {
+			if (mHud.getInGamePauseButton().contains(location)) {
+				gs.flipPaused();
+			}
 		}
 		
 		if (gs.getLevelMenu()) {
