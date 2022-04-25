@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public final class LevelThree extends Level {
 	public LevelThree() {
+		locked = true;
 		tiles = new ArrayList<>();
 		backgroundTiles = new ArrayList<>();
 		tiles.add(".....................................................");

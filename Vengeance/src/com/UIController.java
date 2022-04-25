@@ -15,8 +15,8 @@ class UIController implements InputObserver {
 	UIController(GameEngineBroadcaster b, HUD hud, Point screenSize) {
 		this.addObserver(b);
 		
-		mScreenSize = screenSize;
-		mHud = hud;
+		this.mScreenSize = screenSize;
+		this.mHud = hud;
 	}
 
 	void addObserver(GameEngineBroadcaster b) {
@@ -58,7 +58,7 @@ class UIController implements InputObserver {
 		if (gs.isPaused() && gs.isGameOver() && !gs.getLevelMenu() && !gs.getOptionsMenu() && !gs.getCustomMenu()) {
 			
 			if (mHud.getStartMenuButtons().get("Start").contains(location)) {
-				gs.setCurrentLevel(2);
+				gs.setCurrentLevel(gs.getHighestReachedLevel());
 				gs.startNewGame();
 			} else if (mHud.getStartMenuButtons().get("Options").contains(location)) {
 				gs.flipOptionsMenu();
@@ -90,9 +90,11 @@ class UIController implements InputObserver {
 		if (gs.getLevelMenu()) {
 			for (int i = 0; i < mHud.getLevelButtons().size(); i++) {
 				if (mHud.getLevelButtons().get(i).contains(location)) {
-					gs.flipLevelMenu();
-					gs.setCurrentLevel(i + 1);
-					gs.startNewGame();
+					if (gs.getHighestReachedLevel() >= i+1) {
+						gs.flipLevelMenu();
+						gs.setCurrentLevel(i + 1);
+						gs.startNewGame();
+					}
 				}
 			}
 			

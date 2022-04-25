@@ -20,7 +20,8 @@ final class GameState {
 	private int mCoinsCollected;
 	private int mTotalCoins;
 	
-	private int mCurrentLevel = 2;
+	private int mCurrentLevel = 1;
+	private int mHighestReachedLevel = 1;
 	
 	GameState(EngineController ec, SoundEngine se) {
 		mEngineController = ec;
@@ -45,6 +46,14 @@ final class GameState {
 	
 	void setCurrentLevel(int level) {
 		mCurrentLevel = level;
+	}
+	
+	int getHighestReachedLevel() {
+		return mHighestReachedLevel;
+	}
+	
+	void setHighestReachedLevel() {
+		mHighestReachedLevel++;
 	}
 	
 	void resetCoins() {

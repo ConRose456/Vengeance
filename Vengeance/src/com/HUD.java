@@ -67,6 +67,7 @@ final class HUD {
 	
 	// Level Menu Buttons
 	private Image mLevelMenuBackgroundBitmap;
+	private Image mLockedLevelBitmap;
 	private ArrayList<Image> mLevelBitmapButtons = new ArrayList<>();
 	
 	private ArrayList<RectangleF> mLevelMenuButtons = new ArrayList<>();
@@ -114,6 +115,7 @@ final class HUD {
 			mPauseButtonBitmap = ImageIO.read(new File(path + "/UI/PauseButton.png"));
 			mLevelMenuButtonBitmap = ImageIO.read(new File(path + "/UI/LevelMenuButton.png"));
 			mLevelMenuBackgroundBitmap = ImageIO.read(new File(path + "/UI/LevelMenuBackground.png"));
+			mLockedLevelBitmap = ImageIO.read(new File(path + "/UI/LockedLevel.png"));
 			
 			// Start Screen Bitmaps
 			mStartButtonBitmap = ImageIO.read(new File(path + "/UI/StartButton.png"));
@@ -377,10 +379,10 @@ final class HUD {
 		int i = 0;
 		for (RectangleF button : mLevelMenuButtons) {
 			
-			if (i <= mLevelBitmapButtons.size() - 1) {
+			if (i < gs.getHighestReachedLevel()) {
 				g.drawImage(mLevelBitmapButtons.get(i), (int)button.x, (int)button.y, (int)button.width, (int)button.height, null);
 			} else {
-				g.fillRect((int)button.x, (int)button.y, (int)button.width, (int)button.height);
+				g.drawImage(mLockedLevelBitmap, (int)button.x, (int)button.y, (int)button.width, (int)button.height, null);
 			}
 			i++;
 		}
