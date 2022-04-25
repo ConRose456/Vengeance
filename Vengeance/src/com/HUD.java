@@ -20,43 +20,56 @@ final class HUD {
 
 	private int mScreenWidth;
 	private int mScreenHeight;
-	private int mTextFormatting;
 	
+	// Start Screen Buttons
 	private Image mMenuBitmap;
 	private Image mTitleBitmap;
+	private Image mVersionBitmap;
 	private Image mCurrencyBitmap;
-	
-	private Image mBackButtonBitmap;
-	private Image mPauseButtonBitmap;
+	private Image mStartButtonBitmap;
+	private Image mOptionsButtonBitmap;
+	private Image mExitButtonBitmap;
+	private Image mCustomizationButtonBitmap;
 	private Image mLevelMenuButtonBitmap;
-	private Image mOptionsMenuButtonBitmap;
-	
-	private Image mLevelMenuBackgroundBitmap;
-	
-	private ArrayList<Image> mLevelButtons = new ArrayList<>();
-	
-	private int mMenuBuffer;
-	
-	private int mPauseMenuVerticalBuffer;
-	private int mPauseMenuHorizontalBuffer;
-	private int mPauseMenuBuffer;
-	
-	private int mDeathScreenHeightBuffer;
-	
-	private final int mCoinBufferHorizontal = 18;
-	private final int mCoinBufferVertical = 33;
 	
 	private RectangleF mLevelMenuButton;
-	private RectangleF mOptionsMenuButton;
+	private RectangleF mCustomizationButton;
+	private HashMap<String, RectangleF> mStartMenuButtonMap = new HashMap<>();
+	private RectangleF mStartMenu_StartButton;
+	private RectangleF mStartMenu_OptionsButton;
+	private RectangleF mStartMenu_ExitButton;
+	
+	private int mStartMenuButtonWidth;
+	private int mStartMenuButtonHeight;
+	private int mStartMenuButtonVerticalButtonBuffer_initial;
+	private int mStartMenuButtonHorizontalButtonBuffer_initial;
+	private int mStartMenuButtonVerticalButtonBuffer;
 	
 	private int mMainMenu_LevelMenuButtonSize;
 	private int mMainMenu_LevelMenuButton_x;
 	private int mMainMenu_LevelMenuButton_y;
 	
-	private ArrayList<RectangleF> mLevelMenuButtons = new ArrayList<>();
+	private int mVersionTextWidth;
+	private int mVersionTextHeight;
+	private int mVersionTextX;
+	private int mVersionTextY;
 	
-	private RectangleF mLevelMenuBackButton;
-	private RectangleF mOptionsMenuBackButton;
+
+	// Pause Screen Buttons
+	private Image mPauseButtonBitmap;
+	private Image mResumeButtonBitmap;
+	
+	private HashMap<String, RectangleF> mPauseMenuButtonMap = new HashMap<>();
+	private RectangleF mPauseMenu_ResumeButton;
+	private RectangleF mPauseMenu_OptionsButton;
+	private RectangleF mPauseMenu_ExitButton;
+	
+	
+	// Level Menu Buttons
+	private Image mLevelMenuBackgroundBitmap;
+	private ArrayList<Image> mLevelBitmapButtons = new ArrayList<>();
+	
+	private ArrayList<RectangleF> mLevelMenuButtons = new ArrayList<>();
 	
 	private int mLevelMenuButtonSize;
 	private int mLevelMenuButtonVerticalBuffer_initial;
@@ -64,44 +77,53 @@ final class HUD {
 	private int mLevelMenuButtonVerticalBuffer;
 	private int mLevelMenuButtonHorizontalBuffer;
 	
-	private HashMap<String, RectangleF> mPauseMenuButtonMap = new HashMap<>();
-	private RectangleF mPauseMenu_ResumeButton;
-	private RectangleF mPauseMenu_OptionsButton;
-	private RectangleF mPauseMenu_ExitButton;
 	
-	private int mPauseMenuButtonWidth;
-	private int mPauseMenuButtonHeight;
-	private int mPauseMenuButtonVerticalButtonBuffer_initial;
-	private int mPauseMenuButtonHorizontalButtonBuffer_initial;
-	private int mPauseMenuButtonVerticalButtonBuffer;
+	// Back Buttons Stuff
+	private Image mBackButtonBitmap;
 	
+	private RectangleF mLevelMenuBackButton;
+	private RectangleF mOptionsMenuBackButton;
+	private RectangleF mCustomMenuBackButton;
+	
+	
+	// Other Variables
 	private RectangleF mInGamePauseButton;
 	
+	private int mMenuBuffer;
+	private int mDeathScreenHeightBuffer;
+	private final int mCoinBufferHorizontal = 18;
+	private final int mCoinBufferVertical = 33;
+
 	HUD(Point screenSize) {
 		this.mScreenWidth = screenSize.x;
 		this.mScreenHeight = screenSize.y;
 		
-		this.mTextFormatting = screenSize.x / 25;
+		this.mMenuBuffer = mScreenWidth / 10;
 		
 		String path = System.getProperty("user.dir") + "/res/images";
 		
 		try {
+			// Title Bitmap
+			mTitleBitmap = ImageIO.read(new File(path + "/UI/TitleBitmap.png"));
+			mVersionBitmap = ImageIO.read(new File(path + "/UI/VersionText.png"));
+			
+			// UI Bitmaps
 			mMenuBitmap = ImageIO.read(new File(path + "/background.png"));
-			//mTitleBitmap  = ImageIO.read(new File(path + "/title_image.png"));
 			mCurrencyBitmap = ImageIO.read(new File(path + "/coin_icon.png"));
-			mBackButtonBitmap = ImageIO.read(new File(path + "/UI/BackButton.png"));;
-			mPauseButtonBitmap = ImageIO.read(new File(path + "/UI/PauseButton.png"));;
-			mLevelMenuButtonBitmap = ImageIO.read(new File(path + "/UI/LevelMenuButton.png"));;
-			mOptionsMenuButtonBitmap = ImageIO.read(new File(path + "/UI/OptionsMenuButton.png"));
+			mBackButtonBitmap = ImageIO.read(new File(path + "/UI/BackButton.png"));
+			mPauseButtonBitmap = ImageIO.read(new File(path + "/UI/PauseButton.png"));
+			mLevelMenuButtonBitmap = ImageIO.read(new File(path + "/UI/LevelMenuButton.png"));
 			mLevelMenuBackgroundBitmap = ImageIO.read(new File(path + "/UI/LevelMenuBackground.png"));
+			
+			// Start Screen Bitmaps
+			mStartButtonBitmap = ImageIO.read(new File(path + "/UI/StartButton.png"));
+			mOptionsButtonBitmap = ImageIO.read(new File(path + "/UI/OptionsButton.png"));
+			mExitButtonBitmap = ImageIO.read(new File(path + "/UI/ExitButton.png"));
+			mResumeButtonBitmap = ImageIO.read(new File(path + "/UI/ResumeButton.png"));
+			mCustomizationButtonBitmap = ImageIO.read(new File(path + "/UI/CustomizationButton.png"));
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
-		
-		this.mPauseMenuVerticalBuffer = mScreenHeight / 5;
-		this.mPauseMenuHorizontalBuffer = mScreenWidth / 15;
-		this.mPauseMenuBuffer = mScreenWidth / 10;
-		this.mMenuBuffer = mPauseMenuBuffer;
 		
 		this.mDeathScreenHeightBuffer = mScreenHeight / 20;
 		
@@ -115,7 +137,7 @@ final class HUD {
 				mMainMenu_LevelMenuButtonSize,
 				mMainMenu_LevelMenuButtonSize);
 		
-		this.mOptionsMenuButton = new RectangleF(mScreenWidth - mMainMenu_LevelMenuButton_x - mMainMenu_LevelMenuButtonSize,
+		this.mCustomizationButton = new RectangleF(mScreenWidth - mMainMenu_LevelMenuButton_x - mMainMenu_LevelMenuButtonSize,
 				mScreenHeight - mMainMenu_LevelMenuButton_y - mMainMenu_LevelMenuButtonSize,
 				mMainMenu_LevelMenuButtonSize,
 				mMainMenu_LevelMenuButtonSize);
@@ -125,8 +147,12 @@ final class HUD {
 				mMainMenu_LevelMenuButton_y + (mMainMenu_LevelMenuButtonSize / 5),
 				mMainMenu_LevelMenuButtonSize,
 				mMainMenu_LevelMenuButtonSize);
-		
 		this.mOptionsMenuBackButton = new RectangleF(
+				mMainMenu_LevelMenuButton_x,
+				mMainMenu_LevelMenuButton_y + (mMainMenu_LevelMenuButtonSize / 5),
+				mMainMenu_LevelMenuButtonSize,
+				mMainMenu_LevelMenuButtonSize);
+		this.mCustomMenuBackButton = new RectangleF(
 				mMainMenu_LevelMenuButton_x,
 				mMainMenu_LevelMenuButton_y + (mMainMenu_LevelMenuButtonSize / 5),
 				mMainMenu_LevelMenuButtonSize,
@@ -145,9 +171,9 @@ final class HUD {
 		this.mLevelMenuButtonHorizontalBuffer = (int)((mScreenWidth - (mLevelMenuButtonHorizontalBuffer_initial * 2)) / 5);
 		
 		try {
-			mLevelButtons.add(ImageIO.read(new File(path + "/UI/LevelOneButton.png")));
-			mLevelButtons.add(ImageIO.read(new File(path + "/UI/LevelTwoButton.png")));
-			mLevelButtons.add(ImageIO.read(new File(path + "/UI/LevelThreeButton.png")));
+			mLevelBitmapButtons.add(ImageIO.read(new File(path + "/UI/LevelOneButton.png")));
+			mLevelBitmapButtons.add(ImageIO.read(new File(path + "/UI/LevelTwoButton.png")));
+			mLevelBitmapButtons.add(ImageIO.read(new File(path + "/UI/LevelThreeButton.png")));
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
@@ -162,27 +188,40 @@ final class HUD {
 			}
 		}
 		
-		this.mPauseMenuButtonWidth = (int)(mScreenWidth * 0.4f);
-		this.mPauseMenuButtonHeight = (int)(mScreenHeight * 0.05f);
-		this.mPauseMenuButtonVerticalButtonBuffer_initial = (int)(mScreenHeight * 0.36f);
-		this.mPauseMenuButtonHorizontalButtonBuffer_initial = (int)(mScreenWidth * 0.060f);
-		this.mPauseMenuButtonVerticalButtonBuffer = (int)(mScreenHeight * 0.08f);
+		this.mVersionTextWidth = mVersionBitmap.getWidth(null) * 2;
+		this.mVersionTextHeight = mVersionBitmap.getHeight(null) * 2;
+		this.mVersionTextX = (int)((mScreenWidth / 2) - (mVersionTextWidth / 2));
+		this.mVersionTextY = (int)(mLevelMenuButton.y + mLevelMenuButton.height - mVersionTextHeight);
 		
-		this.mPauseMenu_ResumeButton = new RectangleF(
-				mPauseMenuButtonHorizontalButtonBuffer_initial,
-				mPauseMenuButtonVerticalButtonBuffer_initial,
-				mPauseMenuButtonWidth,
-				mPauseMenuButtonHeight);
-		this.mPauseMenu_OptionsButton = new RectangleF(
-				mPauseMenuButtonHorizontalButtonBuffer_initial,
-				mPauseMenuButtonVerticalButtonBuffer_initial + mPauseMenuButtonVerticalButtonBuffer,
-				mPauseMenuButtonWidth,
-				mPauseMenuButtonHeight);
-		this.mPauseMenu_ExitButton = new RectangleF(
-				mPauseMenuButtonHorizontalButtonBuffer_initial,
-				mPauseMenuButtonVerticalButtonBuffer_initial + (mPauseMenuButtonVerticalButtonBuffer * 2),
-				mPauseMenuButtonWidth,
-				mPauseMenuButtonHeight);
+		this.mStartMenuButtonWidth = (int)(mScreenWidth * 0.1125f);
+		this.mStartMenuButtonHeight = (int)(mScreenHeight * 0.08f);
+		this.mStartMenuButtonVerticalButtonBuffer_initial = (int)(mScreenHeight * 0.36f);
+		this.mStartMenuButtonHorizontalButtonBuffer_initial = (int)((mScreenWidth * 0.5f) - (mStartMenuButtonWidth / 2));
+		this.mStartMenuButtonVerticalButtonBuffer = (int)(mScreenHeight * 0.10f);
+		
+		this.mStartMenu_StartButton = new RectangleF(
+				mStartMenuButtonHorizontalButtonBuffer_initial,
+				mStartMenuButtonVerticalButtonBuffer_initial,
+				mStartMenuButtonWidth,
+				mStartMenuButtonHeight);
+		this.mStartMenu_OptionsButton = new RectangleF(
+				mStartMenuButtonHorizontalButtonBuffer_initial,
+				mStartMenuButtonVerticalButtonBuffer_initial + mStartMenuButtonVerticalButtonBuffer,
+				mStartMenuButtonWidth,
+				mStartMenuButtonHeight);
+		this.mStartMenu_ExitButton = new RectangleF(
+				mStartMenuButtonHorizontalButtonBuffer_initial,
+				mStartMenuButtonVerticalButtonBuffer_initial + (mStartMenuButtonVerticalButtonBuffer * 2),
+				mStartMenuButtonWidth,
+				mStartMenuButtonHeight);
+		
+		this.mPauseMenu_ResumeButton = mStartMenu_StartButton;
+		this.mPauseMenu_OptionsButton = mStartMenu_OptionsButton;
+		this.mPauseMenu_ExitButton = mStartMenu_ExitButton;
+		
+		this.mStartMenuButtonMap.put("Start", mStartMenu_StartButton);
+		this.mStartMenuButtonMap.put("Options", mStartMenu_OptionsButton);
+		this.mStartMenuButtonMap.put("Exit", mStartMenu_ExitButton);
 		
 		this.mPauseMenuButtonMap.put("Resume", mPauseMenu_ResumeButton);
 		this.mPauseMenuButtonMap.put("Options", mPauseMenu_OptionsButton);
@@ -225,74 +264,86 @@ final class HUD {
 		if (gs.getOptionsMenu()) {
 			drawOptionsMenu(g, gs);
 		}
+		if (gs.getCustomMenu()) {
+			drawCustomMenu(g, gs);
+		}
 	}	
 	
 	private void drawMainMenu(Graphics g, GameState gs) {
+		
 		g.drawImage(mMenuBitmap, 0, 0, mScreenWidth, mScreenHeight, null);
+		g.drawImage(mTitleBitmap, 
+				(int)((mScreenWidth * 0.5f) - ((mScreenWidth * 0.675f) / 2)), 
+				(int)(mScreenHeight * 0.12f), 
+				(int)(mScreenWidth * 0.675f), 
+				(int)(mScreenHeight * 0.12f), null);
+		g.drawImage(mVersionBitmap, 
+				mVersionTextX, 
+				mVersionTextY, 
+				mVersionTextWidth, 
+				mVersionTextHeight, null);
 		
 		g.setColor(new Color(255, 255, 255, 255));
-		
-		String titleText = "Vengeance";
-		g.setFont(new Font("Arial", Font.PLAIN, 36));
-		int titleTextWidth = g.getFontMetrics().stringWidth(titleText);
-		
-		g.drawString(titleText, (mScreenWidth / 2) - (titleTextWidth / 2), g.getFont().getSize());
-		
-		String startText = "Press Space to Play!";
-		g.setFont(new Font("Arial", Font.PLAIN, 24));
-		int startTextWidth = g.getFontMetrics().stringWidth(startText);
-		
-		g.drawString(startText, (mScreenWidth / 2) - (startTextWidth / 2), 
-				mScreenHeight - g.getFont().getSize());
-		
 		g.setFont(new Font("Arial", Font.PLAIN, 18));
 		g.drawImage(mCurrencyBitmap, mMenuBuffer * 9, mCoinBufferHorizontal, null);
 		g.drawString("" + gs.getTotalCoins(), 
 				mMenuBuffer * 9 + (mCurrencyBitmap.getWidth(null) + 5), mCoinBufferVertical);
+		
+		g.drawImage(mStartButtonBitmap, 
+				(int)mStartMenu_StartButton.x, 
+				(int)mStartMenu_StartButton.y, 
+				(int)mStartMenu_StartButton.width, 
+				(int)mStartMenu_StartButton.height, null);
+		g.drawImage(mOptionsButtonBitmap, 
+				(int)mStartMenu_OptionsButton.x, 
+				(int)mStartMenu_OptionsButton.y, 
+				(int)mStartMenu_OptionsButton.width, 
+				(int)mStartMenu_OptionsButton.height, null);
+		g.drawImage(mExitButtonBitmap, 
+				(int)mStartMenu_ExitButton.x, 
+				(int)mStartMenu_ExitButton.y, 
+				(int)mStartMenu_ExitButton.width, 
+				(int)mStartMenu_ExitButton.height, null);
 		
 		g.drawImage(mLevelMenuButtonBitmap,
 				(int)mLevelMenuButton.x, 
 				(int)mLevelMenuButton.y, 
 				(int)mLevelMenuButton.width, 
 				(int)mLevelMenuButton.height, null);
-
-		g.drawImage(mOptionsMenuButtonBitmap, 
-				(int)mOptionsMenuButton.x, 
-				(int)mOptionsMenuButton.y, 
-				(int)mOptionsMenuButton.width, 
-				(int)mOptionsMenuButton.height, null);
+		g.drawImage(mCustomizationButtonBitmap, 
+				(int)mCustomizationButton.x, 
+				(int)mCustomizationButton.y, 
+				(int)mCustomizationButton.width, 
+				(int)mCustomizationButton.height, null);
 	}
 	
 	private void drawPauseMenu(Graphics g, Graphics2D g2d) {
 		GradientPaint graident = new GradientPaint(50, 50, new Color(0, 0, 0, 255),
-				mScreenWidth, mScreenWidth, new Color(255, 255, 255, 10));
+				mScreenWidth, mScreenWidth, new Color(0, 0, 0, 100));
 		g2d.setPaint(graident);
-		g2d.fillRect(0, 0, mScreenWidth, mScreenHeight);				
+		g2d.fillRect(0, 0, mScreenWidth, mScreenHeight);
 		
-		g.setColor(new Color(255, 255, 255, 255));
+		g.drawImage(mTitleBitmap, 
+				(int)((mScreenWidth * 0.5f) - ((mScreenWidth * 0.675f) / 2)), 
+				(int)(mScreenHeight * 0.12f), 
+				(int)(mScreenWidth * 0.675f), 
+				(int)(mScreenHeight * 0.12f), null);
 		
-		String pauseTitleText = "Vengeance";
-		g.setFont(new Font("Arial", Font.PLAIN, 36));
-		g.drawString(pauseTitleText, mPauseMenuHorizontalBuffer, mPauseMenuVerticalBuffer);
-		
-		GradientPaint pauseButtonGradient = new GradientPaint(10, 10, new Color(200, 200, 200, 100), 
-				mPauseMenu_ResumeButton.width, mPauseMenu_ResumeButton.height, new Color(0, 0, 0, 0));
-		g2d.setPaint(pauseButtonGradient);
-		g2d.fillRect((int)mPauseMenu_ResumeButton.x, (int)mPauseMenu_ResumeButton.y, (int)mPauseMenu_ResumeButton.width, (int)mPauseMenu_ResumeButton.height);
-		g2d.fillRect((int)mPauseMenu_OptionsButton.x, (int)mPauseMenu_OptionsButton.y, (int)mPauseMenu_OptionsButton.width, (int)mPauseMenu_OptionsButton.height);
-		g2d.fillRect((int)mPauseMenu_ExitButton.x, (int)mPauseMenu_ExitButton.y, (int)mPauseMenu_ExitButton.width, (int)mPauseMenu_ExitButton.height);
-		
-		String resumeText = "Resume";
-		String optionsText = "Options";
-		String exitGameText = "Exit";
-		g.setFont(new Font("Arial", Font.PLAIN, 20));
-		g.setColor(new Color(255, 255, 255, 255));
-		g.drawString(resumeText, mPauseMenuHorizontalBuffer, 
-				mPauseMenuVerticalBuffer + mPauseMenuBuffer + g.getFont().getSize());
-		g.drawString(optionsText, mPauseMenuHorizontalBuffer, 
-				(int)(mPauseMenuVerticalBuffer + mPauseMenuBuffer * 1.5f + g.getFont().getSize()));
-		g.drawString(exitGameText, mPauseMenuHorizontalBuffer, 
-				mPauseMenuVerticalBuffer + mPauseMenuBuffer * 2 + g.getFont().getSize());
+		g.drawImage(mResumeButtonBitmap, 
+				(int)mPauseMenu_ResumeButton.x, 
+				(int)mPauseMenu_ResumeButton.y, 
+				(int)mPauseMenu_ResumeButton.width, 
+				(int)mPauseMenu_ResumeButton.height, null);
+		g.drawImage(mOptionsButtonBitmap, 
+				(int)mPauseMenu_OptionsButton.x, 
+				(int)mPauseMenu_OptionsButton.y, 
+				(int)mPauseMenu_OptionsButton.width, 
+				(int)mPauseMenu_OptionsButton.height, null);
+		g.drawImage(mExitButtonBitmap, 
+				(int)mPauseMenu_ExitButton.x, 
+				(int)mPauseMenu_ExitButton.y, 
+				(int)mPauseMenu_ExitButton.width, 
+				(int)mPauseMenu_ExitButton.height, null);
 	}
 	
 	private void drawDeathScreen(Graphics g) {
@@ -326,8 +377,8 @@ final class HUD {
 		int i = 0;
 		for (RectangleF button : mLevelMenuButtons) {
 			
-			if (i <= mLevelButtons.size() - 1) {
-				g.drawImage(mLevelButtons.get(i), (int)button.x, (int)button.y, (int)button.width, (int)button.height, null);
+			if (i <= mLevelBitmapButtons.size() - 1) {
+				g.drawImage(mLevelBitmapButtons.get(i), (int)button.x, (int)button.y, (int)button.width, (int)button.height, null);
 			} else {
 				g.fillRect((int)button.x, (int)button.y, (int)button.width, (int)button.height);
 			}
@@ -373,6 +424,36 @@ final class HUD {
 				mMenuBuffer * 9 + (mCurrencyBitmap.getWidth(null) + 5), mCoinBufferVertical);
 	}
 	
+	public void drawCustomMenu(Graphics g, GameState gs) {
+		g.drawImage(mMenuBitmap, 0, 0, mScreenWidth, mScreenHeight, null);
+		g.drawImage(mLevelMenuBackgroundBitmap, 
+				(int)(mScreenWidth * 0.094f), (int)(mScreenHeight * 0.22f), 
+				(int)(mScreenWidth * 0.81f), (int)(mScreenHeight * 0.72f), null);
+		
+		g.setColor(new Color(255, 255, 255, 255));
+		String titleText = "Character Customization";
+		g.setFont(new Font("Arial", Font.PLAIN, 36));
+		int titleTextWidth = g.getFontMetrics().stringWidth(titleText);
+		
+		g.drawString(titleText, (mScreenWidth / 2) - (titleTextWidth / 2), g.getFont().getSize());
+		
+		g.drawImage(mBackButtonBitmap, 
+				(int)mLevelMenuBackButton.x, 
+				(int)mLevelMenuBackButton.y, 
+				(int)mLevelMenuBackButton.width,
+				(int)mLevelMenuBackButton.height, null);
+		
+		g.setColor(new Color(255, 255, 255, 255));
+		g.setFont(new Font("Arial", Font.PLAIN, 18));
+		g.drawImage(mCurrencyBitmap, mMenuBuffer * 9, mCoinBufferHorizontal, null);
+		g.drawString("" + gs.getTotalCoins(), 
+				mMenuBuffer * 9 + (mCurrencyBitmap.getWidth(null) + 5), mCoinBufferVertical);
+	}
+	
+	public HashMap<String, RectangleF> getStartMenuButtons() {
+		return mStartMenuButtonMap;
+	}
+	
 	public HashMap<String, RectangleF> getPauseMenuButtons() {
 		return mPauseMenuButtonMap;
 	}
@@ -381,8 +462,8 @@ final class HUD {
 		return mLevelMenuButton;
 	}
 	
-	public RectangleF getMainMenu_OptionsButton() {
-		return mOptionsMenuButton;
+	public RectangleF getMainMenu_CustomizationButton() {
+		return mCustomizationButton;
 	}
 	
 	public RectangleF getLevelMenuBackButton() {
@@ -391,6 +472,10 @@ final class HUD {
 	
 	public RectangleF getOptionsMenuBackButton() {
 		return mOptionsMenuBackButton;
+	}
+	
+	public RectangleF getCustomMenuBackButton() {
+		return mCustomMenuBackButton;
 	}
 	
 	public RectangleF getInGamePauseButton() {

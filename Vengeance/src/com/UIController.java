@@ -55,15 +55,22 @@ class UIController implements InputObserver {
 	@Override
 	public void handleMouseInput(Point location, GameState gs) {
 		
-		if (gs.isPaused() && gs.isGameOver() && !gs.getLevelMenu() && !gs.getOptionsMenu()) {
-			if (mHud.getMainMenu_LevelButton().contains(location)) {
-				gs.flipLevelMenu();
-			} else if (mHud.getMainMenu_OptionsButton().contains(location)) {
-				gs.flipOptionsMenu();
-			} else {
+		if (gs.isPaused() && gs.isGameOver() && !gs.getLevelMenu() && !gs.getOptionsMenu() && !gs.getCustomMenu()) {
+			
+			if (mHud.getStartMenuButtons().get("Start").contains(location)) {
 				gs.setCurrentLevel(2);
 				gs.startNewGame();
+			} else if (mHud.getStartMenuButtons().get("Options").contains(location)) {
+				gs.flipOptionsMenu();
+			} else if (mHud.getStartMenuButtons().get("Exit").contains(location)) {
+				System.exit(0);
 			}
+			
+			if (mHud.getMainMenu_LevelButton().contains(location)) {
+				gs.flipLevelMenu();
+			} else if (mHud.getMainMenu_CustomizationButton().contains(location)) {
+				gs.flipCustomMenu();
+			} 
 		} else if (!gs.isGameOver() && gs.isPaused()) {
 			if (mHud.getPauseMenuButtons().get("Resume").contains(location)) {
 				gs.flipPaused();
@@ -97,6 +104,12 @@ class UIController implements InputObserver {
 		if (gs.getOptionsMenu()) {
 			if (mHud.getOptionsMenuBackButton().contains(location)) {
 				gs.flipOptionsMenu();
+			}
+		}
+		
+		if (gs.getCustomMenu()) {
+			if (mHud.getCustomMenuBackButton().contains(location)) {
+				gs.flipCustomMenu();
 			}
 		}
 	}
