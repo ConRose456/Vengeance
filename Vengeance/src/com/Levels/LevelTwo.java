@@ -29,7 +29,7 @@ public final class LevelTwo extends Level {
 		tiles.add("...................mmm.f.ammmmm......a..amm..........");
 		tiles.add("....................mmms.fammmm..........am..........");
 		tiles.add("......................mms..smmms.f.fc.f.f.m..........");
-		tiles.add(".......................mmmsmmmmms..cccs..sm..........");
+		tiles.add(".......................mmmsmmmmms..cccsy.sm..........");
 		tiles.add(".........................mmmmmmmmmmmmmmmmmm..........");
 		tiles.add(".....................................................");
 		tiles.add(".....................................................");

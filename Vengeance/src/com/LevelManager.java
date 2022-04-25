@@ -90,6 +90,9 @@ final class LevelManager {
 				case 'b':
 					objects.add(factory.create(new Destructible_Box(), coords));
 					break;
+				case 'y':
+					objects.add(factory.create(new TunnelSpec(), coords));
+					break;
 				case '.':
 					break;
 				}

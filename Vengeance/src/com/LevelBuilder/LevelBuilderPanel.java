@@ -31,7 +31,7 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 	
 	private Thread thread = null;
 	
-	private int cellSize = 15;
+	private int cellSize = 8;
 	
 	private char objectType = 'g';
 	
@@ -242,7 +242,7 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 	
 	private void importLevelFile() {
 		map.clear();
-		background.clear();
+		//background.clear();
 		
 		boolean inBackground = false;
 		try {

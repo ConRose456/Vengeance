@@ -52,10 +52,6 @@ final class GameState {
 		return mHighestReachedLevel;
 	}
 	
-	void setHighestReachedLevel() {
-		mHighestReachedLevel++;
-	}
-	
 	void resetCoins() {
 		mCoinsCollected = 0;
 	}
@@ -121,6 +117,14 @@ final class GameState {
 	
 	void death() {
 		mGameOver = true;
+	}
+	
+	void levelCompleted() {
+		if (mCurrentLevel == mHighestReachedLevel) {
+			mHighestReachedLevel++;
+		}
+		mGameOver = true;
+		mPaused = true;
 	}
 	
 	boolean isDrawing() {

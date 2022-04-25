@@ -78,6 +78,12 @@ class PhysicsEngine {
 									playersLocation.y = (testedTransform.getLocation().y) 
 											- (playersTransform.getSize().y);
 									break;
+								case "level completed with 2":
+									gs.levelCompleted();
+									break;
+								case "level completed with 3":
+									gs.levelCompleted();
+									break;
 								case "death with 0":
 									gs.death();
 									break;
