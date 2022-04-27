@@ -12,6 +12,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JPanel;
 
+import com.util.JSONReader;
+
 class GameEngine extends JPanel implements Runnable, GameEngineBroadcaster, EngineController,
 												KeyListener, MouseListener {
 
@@ -30,6 +32,7 @@ class GameEngine extends JPanel implements Runnable, GameEngineBroadcaster, Engi
 	private HUD mHud = null;
 	private LevelManager mLevelManager = null;
 	private UIController mUIController = null;
+	private JSONReader reader = null;
 	
 	private CopyOnWriteArrayList<InputObserver> mInputObservers = new CopyOnWriteArrayList<InputObserver>();
 	
@@ -40,6 +43,8 @@ class GameEngine extends JPanel implements Runnable, GameEngineBroadcaster, Engi
 	private SoundEngine se = SoundEngine.getInstance();
 	
 	GameEngine() {
+		this.reader = JSONReader.getInstance();
+		
 		this.mGameState = new GameState(this, se);
 		this.mRenderer = new Renderer(new Point(WIDTH, HEIGHT));
 		this.mPhysicsEngine = new PhysicsEngine(se);

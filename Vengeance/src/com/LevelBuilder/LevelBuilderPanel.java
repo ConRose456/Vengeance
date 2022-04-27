@@ -14,11 +14,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import javax.swing.JPanel;
 
 import com.BitmapStore;
+import com.util.JSONReader;
 import com.util.PointF;
 
 
@@ -31,9 +33,9 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 	
 	private Thread thread = null;
 	
-	private int cellSize = 8;
+	private int cellSize = 15;
 	
-	private char objectType = 'g';
+	private char objectType = '0';
 	
 	private ArrayList<String> map = new ArrayList<>();
 	private ArrayList<String> background = new ArrayList<>();
@@ -42,23 +44,24 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 	
 	LevelBuilderPanel() {
 		BitmapStore bs = BitmapStore.getInstance();
+		JSONReader js = JSONReader.getInstance();
 		
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.setFocusable(true);
 		this.addKeyListener(this);
 		this.addMouseListener(this);
 		
-		BitmapStore.addBitmap("grass_block", new PointF(1,1), cellSize, false);
-		BitmapStore.addBitmap("mud_block", new PointF(1,1), cellSize, false);
-		BitmapStore.addBitmap("coin_icon", new PointF(1,1), cellSize, false);
-		BitmapStore.addBitmap("player", new PointF(1,1), cellSize, false);
-		BitmapStore.addBitmap("death_visible", new PointF(10,10), cellSize, false);
-		BitmapStore.addBitmap("tree", new PointF(8,8), cellSize, false);
-		BitmapStore.addBitmap("stalagmite_down", new PointF(1,1), cellSize, false);
-		BitmapStore.addBitmap("stalagmite_up", new PointF(1,1), cellSize, false);
-		BitmapStore.addBitmap("candle", new PointF(1,1), cellSize, false);
-		BitmapStore.addBitmap("destructible_box", new PointF(1,1), cellSize, false);
-		BitmapStore.addBitmap("cave_wall", new PointF(1,1), cellSize, false);
+		HashMap<String, PointF> data = JSONReader.loadGameObjectsLevelBuilder();
+		String path = System.getProperty("user.dir") + "/res/images/";
+		
+		File[] images = new File(path).listFiles();
+		for (File img : images) {
+			String fileName = img.getName();
+			if (fileName.length() > 4) {
+				String name = img.getName().substring(0, img.getName().length() - 4);
+				BitmapStore.addBitmap(name, data.get(name), cellSize, false);
+			}
+		}
 		
 		for (int i = 0; i < HEIGHT / cellSize; i++) {
 			String temp = "";
@@ -101,8 +104,76 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 		for (int i = 0; i < background.size(); i++) {
 			for (int j = 0; j < background.get(i).length(); j++) {
 				switch(background.get(i).charAt(j)) {
+				case 'p':
+					g.drawImage(BitmapStore.getBitmap("p"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '0':
+					g.drawImage(BitmapStore.getBitmap("grass"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '1':
+					g.drawImage(BitmapStore.getBitmap("GrassCornerLeft"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '2':
+					g.drawImage(BitmapStore.getBitmap("GrassCornerRight"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '3':
+					g.drawImage(BitmapStore.getBitmap("GrassCornerRocky"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '4':
+					g.drawImage(BitmapStore.getBitmap("CaveWallOne"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '5':
+					g.drawImage(BitmapStore.getBitmap("CaveWall"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '6':
+					g.drawImage(BitmapStore.getBitmap("CaveWallTwo"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '7':
+					g.drawImage(BitmapStore.getBitmap("CaveBackgroundHole"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '8':
+					g.drawImage(BitmapStore.getBitmap("Mushrooms"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '9':
+					g.drawImage(BitmapStore.getBitmap("GrassForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'a':
+					g.drawImage(BitmapStore.getBitmap("BushForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'b':
+					g.drawImage(BitmapStore.getBitmap("BushBackground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'c':
+					g.drawImage(BitmapStore.getBitmap("Platform"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'd':
+					g.drawImage(BitmapStore.getBitmap("WoodPillar"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'e':
+					g.drawImage(BitmapStore.getBitmap("MineralBlue"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'f':
+					g.drawImage(BitmapStore.getBitmap("Mud"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'g':
+					g.drawImage(BitmapStore.getBitmap("HouseBackground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'h':
+					g.drawImage(BitmapStore.getBitmap("HouseForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'i':
+					g.drawImage(BitmapStore.getBitmap("MudOne"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'j':
+					g.drawImage(BitmapStore.getBitmap("MudTwo"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'k':
+					g.drawImage(BitmapStore.getBitmap("CaveWallRight"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
 				case 'l':
-					g.drawImage(BitmapStore.getBitmap("cave_wall"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					g.drawImage(BitmapStore.getBitmap("CaveWallLeft"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '.':
 					break;
 				}
 			}
@@ -111,35 +182,76 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 		for (int i = 0; i < map.size(); i++) {
 			for (int j = 0; j < map.get(i).length(); j++) {
 				switch(map.get(i).charAt(j)) {
-				case 'g':
-					g.drawImage(BitmapStore.getBitmap("grass_block"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'm':
-					g.drawImage(BitmapStore.getBitmap("mud_block"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'c':
-					g.drawImage(BitmapStore.getBitmap("coin_icon"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'd':
-					g.drawImage(BitmapStore.getBitmap("death_visible"), j * cellSize, i * cellSize, cellSize * 10, cellSize * 10, null);
-					break;
 				case 'p':
-					g.drawImage(BitmapStore.getBitmap("player"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					g.drawImage(BitmapStore.getBitmap("p"), j * cellSize, i * cellSize, cellSize, cellSize, null);
 					break;
-				case 'b':
-					g.drawImage(BitmapStore.getBitmap("destructible_box"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+				case '0':
+					g.drawImage(BitmapStore.getBitmap("grass"), j * cellSize, i * cellSize, cellSize, cellSize, null);
 					break;
-				case 't':
-					g.drawImage(BitmapStore.getBitmap("tree"), j * cellSize, i * cellSize, cellSize * 8, cellSize * 8, null);
+				case '1':
+					g.drawImage(BitmapStore.getBitmap("GrassCornerLeft"), j * cellSize, i * cellSize, cellSize, cellSize, null);
 					break;
-				case 's':
-					g.drawImage(BitmapStore.getBitmap("stalagmite_up"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+				case '2':
+					g.drawImage(BitmapStore.getBitmap("GrassCornerRight"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '3':
+					g.drawImage(BitmapStore.getBitmap("GrassCornerRocky"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '4':
+					g.drawImage(BitmapStore.getBitmap("CaveWallOne"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '5':
+					g.drawImage(BitmapStore.getBitmap("CaveWall"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '6':
+					g.drawImage(BitmapStore.getBitmap("CaveWallTwo"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '7':
+					g.drawImage(BitmapStore.getBitmap("CaveBackgroundHole"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '8':
+					g.drawImage(BitmapStore.getBitmap("Mushrooms"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '9':
+					g.drawImage(BitmapStore.getBitmap("GrassForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
 					break;
 				case 'a':
-					g.drawImage(BitmapStore.getBitmap("stalagmite_down"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					g.drawImage(BitmapStore.getBitmap("BushForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'b':
+					g.drawImage(BitmapStore.getBitmap("BushBackground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'c':
+					g.drawImage(BitmapStore.getBitmap("Platform"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'd':
+					g.drawImage(BitmapStore.getBitmap("WoodPillar"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'e':
+					g.drawImage(BitmapStore.getBitmap("MineralBlue"), j * cellSize, i * cellSize, cellSize, cellSize, null);
 					break;
 				case 'f':
-					g.drawImage(BitmapStore.getBitmap("candle"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					g.drawImage(BitmapStore.getBitmap("Mud"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'g':
+					g.drawImage(BitmapStore.getBitmap("HouseBackground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'h':
+					g.drawImage(BitmapStore.getBitmap("HouseForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'i':
+					g.drawImage(BitmapStore.getBitmap("MudOne"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'j':
+					g.drawImage(BitmapStore.getBitmap("MudTwo"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'k':
+					g.drawImage(BitmapStore.getBitmap("CaveWallRight"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case 'l':
+					g.drawImage(BitmapStore.getBitmap("CaveWallLeft"), j * cellSize, i * cellSize, cellSize, cellSize, null);
+					break;
+				case '.':
 					break;
 				}
 			}
@@ -155,51 +267,87 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 		int key = e.getKeyCode();
 	
 		switch (key) {
-		case KeyEvent.VK_G:
-			objectType = 'g';
-			break;
-		case KeyEvent.VK_M:
-			objectType = 'm';
-			break;
-		case KeyEvent.VK_C:
-			objectType = 'c';
-			break;
-		case KeyEvent.VK_T:
-			objectType = 't';
-			break;
-		case KeyEvent.VK_D:
-			objectType = 'd';
-			break;
 		case KeyEvent.VK_P:
 			objectType = 'p';
 			break;
-		case KeyEvent.VK_PERIOD:
-			objectType = '.';
+		case KeyEvent.VK_0:
+			objectType = '0';
 			break;
-		case KeyEvent.VK_S:
-			objectType = 's';
+		case KeyEvent.VK_1:
+			objectType = '1';
+			break;
+		case KeyEvent.VK_2:
+			objectType = '2';
+			break;
+		case KeyEvent.VK_3:
+			objectType = '3';
+			break;
+		case KeyEvent.VK_4:
+			objectType = '4';
+			break;
+		case KeyEvent.VK_5:
+			objectType = '5';
+			break;
+		case KeyEvent.VK_6:
+			objectType = '6';
+			break;
+		case KeyEvent.VK_7:
+			objectType = '7';
+			break;
+		case KeyEvent.VK_8:
+			objectType = '8';
+			break;
+		case KeyEvent.VK_9:
+			objectType = '9';
 			break;
 		case KeyEvent.VK_A:
 			objectType = 'a';
 			break;
-		case KeyEvent.VK_F:
-			objectType = 'f';
-			break;
 		case KeyEvent.VK_B:
 			objectType = 'b';
 			break;
+		case KeyEvent.VK_C:
+			objectType = 'c';
+			break;
+		case KeyEvent.VK_D:
+			objectType = 'd';
+			break;
+		case KeyEvent.VK_E:
+			objectType = 'e';
+			break;
+		case KeyEvent.VK_F:
+			objectType = 'f';
+			break;
+		case KeyEvent.VK_G:
+			objectType = 'g';
+			break;
+		case KeyEvent.VK_H:
+			objectType = 'h';
+			break;
+		case KeyEvent.VK_I:
+			objectType = 'i';
+			break;
+		case KeyEvent.VK_J:
+			objectType = 'j';
+			break;
+		case KeyEvent.VK_K:
+			objectType = 'k';
+			break;
 		case KeyEvent.VK_L:
 			objectType = 'l';
+			break;
+		case KeyEvent.VK_PERIOD:
+			objectType = '.';
 			break;
 		}
 		
 		if (key == KeyEvent.VK_ESCAPE) {
 			exportLevel();
 		}
-		if (key == KeyEvent.VK_1) {
+		if (key == KeyEvent.VK_TAB) {
 			importLevelFile();
 		}
-		if (key == KeyEvent.VK_2) {
+		if (key == KeyEvent.VK_SHIFT) {
 			isBackground = !isBackground;
 		}
 	}

@@ -109,7 +109,7 @@ final class HUD {
 			mVersionBitmap = ImageIO.read(new File(path + "/UI/VersionText.png"));
 			
 			// UI Bitmaps
-			mMenuBitmap = ImageIO.read(new File(path + "/background.png"));
+			mMenuBitmap = ImageIO.read(new File(path + "/backgroundSky.png"));
 			mCurrencyBitmap = ImageIO.read(new File(path + "/coin_icon.png"));
 			mBackButtonBitmap = ImageIO.read(new File(path + "/UI/BackButton.png"));
 			mPauseButtonBitmap = ImageIO.read(new File(path + "/UI/PauseButton.png"));

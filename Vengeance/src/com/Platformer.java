@@ -17,7 +17,7 @@ class Platformer {
 		mFrame = new JFrame("Vengeance");
 		mGameEngine = new GameEngine();
 		
-		String path = System.getProperty("user.dir") + "/res/images/UI/PlayerIcon.png";
+		String path = System.getProperty("user.dir") + "/res/images/HouseForeground.png";
 		Image playerIcon = ImageIO.read(new File(path));
 		mFrame.setIconImage(playerIcon);
 		

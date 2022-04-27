@@ -7,6 +7,7 @@ import com.Levels.Level;
 import com.Levels.LevelOne;
 import com.Levels.LevelThree;
 import com.Levels.LevelTwo;
+import com.util.JSONReader;
 import com.util.PointF;
 
 final class LevelManager {
@@ -45,11 +46,76 @@ final class LevelManager {
 			for (int column = 0; column < backgroundLevelToLoad.get(row).length(); column++) {
 				PointF coords = new PointF(column, row);
 				switch(backgroundLevelToLoad.get(row).charAt(column)) {
-				case 'l':
-					objects.add(factory.create(new CaveWallSpec(), coords));
+				case '0':
+					objects.add(factory.create(JSONReader.getObjectSpec("0"), coords));
 					break;
 				case '1':
-					objects.add(factory.create(new BackgroundSpec(), coords));
+					objects.add(factory.create(JSONReader.getObjectSpec("1"), coords));
+					break;
+				case '2':
+					objects.add(factory.create(JSONReader.getObjectSpec("2"), coords));
+					break;
+				case '3':
+					objects.add(factory.create(JSONReader.getObjectSpec("3"), coords));
+					break;
+				case '4':
+					objects.add(factory.create(JSONReader.getObjectSpec("4"), coords));
+					break;
+				case '5':
+					objects.add(factory.create(JSONReader.getObjectSpec("5"), coords));
+					break;
+				case '6':
+					objects.add(factory.create(JSONReader.getObjectSpec("6"), coords));
+					break;
+				case '7':
+					objects.add(factory.create(JSONReader.getObjectSpec("7"), coords));
+					break;
+				case '8':
+					objects.add(factory.create(JSONReader.getObjectSpec("8"), coords));
+					break;
+				case '9':
+					objects.add(factory.create(JSONReader.getObjectSpec("9"), coords));
+					break;
+				case 'a':
+					objects.add(factory.create(JSONReader.getObjectSpec("a"), coords));
+					break;
+				case 'b':
+					objects.add(factory.create(JSONReader.getObjectSpec("b"), coords));
+					break;
+				case 'c':
+					objects.add(factory.create(JSONReader.getObjectSpec("c"), coords));
+					break;
+				case 'd':
+					objects.add(factory.create(JSONReader.getObjectSpec("d"), coords));
+					break;
+				case 'e':
+					objects.add(factory.create(JSONReader.getObjectSpec("e"), coords));
+					break;
+				case 'f':
+					objects.add(factory.create(JSONReader.getObjectSpec("f"), coords));
+					break;
+				case 'g':
+					objects.add(factory.create(JSONReader.getObjectSpec("g"), coords));
+					break;
+				case 'h':
+					objects.add(factory.create(JSONReader.getObjectSpec("h"), coords));
+					break;
+				case 'i':
+					objects.add(factory.create(JSONReader.getObjectSpec("i"), coords));
+					break;
+				case 'j':
+					objects.add(factory.create(JSONReader.getObjectSpec("j"), coords));
+					break;
+				case 'k':
+					objects.add(factory.create(JSONReader.getObjectSpec("k"), coords));
+					break;
+				case 'l':
+					objects.add(factory.create(JSONReader.getObjectSpec("l"), coords));
+					break;
+				case 'm':
+					objects.add(factory.create(JSONReader.getObjectSpec("m"), coords));
+					break;
+				case '.':
 					break;
 				}
 			}
@@ -59,39 +125,75 @@ final class LevelManager {
 			for (int column = 0; column < levelToLoad.get(row).length(); column++) {
 				PointF coords = new PointF(column, row);
 				switch(levelToLoad.get(row).charAt(column)) {
-				case 'g':
-					objects.add(factory.create(new GrassBlockSpec(), coords));
-					break;
 				case 'p':
-					objects.add(factory.create(new PlayerSpec(), coords));
+					objects.add(factory.create(JSONReader.getObjectSpec("p"), coords));
 					PLAYER_INDEX = objects.size() - 1;
 					break;
-				case 't':
-					objects.add(factory.create(new TreeSpec(), coords));
+				case '0':
+					objects.add(factory.create(JSONReader.getObjectSpec("0"), coords));
 					break;
-				case 'm':
-					objects.add(factory.create(new MudBlockSpec(), coords));
+				case '1':
+					objects.add(factory.create(JSONReader.getObjectSpec("1"), coords));
 					break;
-				case 'c':
-					objects.add(factory.create(new CoinSpec(), coords));
+				case '2':
+					objects.add(factory.create(JSONReader.getObjectSpec("2"), coords));
 					break;
-				case 'd':
-					objects.add(factory.create(new InvisibleDeathSpec(), coords));
+				case '3':
+					objects.add(factory.create(JSONReader.getObjectSpec("3"), coords));
 					break;
-				case 'f':
-					objects.add(factory.create(new CandleSpec(), coords));
+				case '4':
+					objects.add(factory.create(JSONReader.getObjectSpec("4"), coords));
 					break;
-				case 's':
-					objects.add(factory.create(new Stalagmite_Up(), coords));
+				case '5':
+					objects.add(factory.create(JSONReader.getObjectSpec("5"), coords));
+					break;
+				case '6':
+					objects.add(factory.create(JSONReader.getObjectSpec("6"), coords));
+					break;
+				case '7':
+					objects.add(factory.create(JSONReader.getObjectSpec("7"), coords));
+					break;
+				case '8':
+					objects.add(factory.create(JSONReader.getObjectSpec("8"), coords));
+					break;
+				case '9':
+					objects.add(factory.create(JSONReader.getObjectSpec("9"), coords));
 					break;
 				case 'a':
-					objects.add(factory.create(new Stalagmite_Down(), coords));
+					objects.add(factory.create(JSONReader.getObjectSpec("a"), coords));
 					break;
 				case 'b':
-					objects.add(factory.create(new Destructible_Box(), coords));
+					objects.add(factory.create(JSONReader.getObjectSpec("b"), coords));
 					break;
-				case 'y':
-					objects.add(factory.create(new TunnelSpec(), coords));
+				case 'c':
+					objects.add(factory.create(JSONReader.getObjectSpec("c"), coords));
+					break;
+				case 'd':
+					objects.add(factory.create(JSONReader.getObjectSpec("d"), coords));
+					break;
+				case 'e':
+					objects.add(factory.create(JSONReader.getObjectSpec("e"), coords));
+					break;
+				case 'f':
+					objects.add(factory.create(JSONReader.getObjectSpec("f"), coords));
+					break;
+				case 'g':
+					objects.add(factory.create(JSONReader.getObjectSpec("g"), coords));
+					break;
+				case 'h':
+					objects.add(factory.create(JSONReader.getObjectSpec("h"), coords));
+					break;
+				case 'i':
+					objects.add(factory.create(JSONReader.getObjectSpec("i"), coords));
+					break;
+				case 'j':
+					objects.add(factory.create(JSONReader.getObjectSpec("j"), coords));
+					break;
+				case 'k':
+					objects.add(factory.create(JSONReader.getObjectSpec("k"), coords));
+					break;
+				case 'l':
+					objects.add(factory.create(JSONReader.getObjectSpec("l"), coords));
 					break;
 				case '.':
 					break;

@@ -1,0 +1,221 @@
+[
+	{
+		"p" : {
+			"tag" : "Player",
+			"bitmapName" : "player",
+			"speed" : 10.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["AnimatedGraphicsComponent", "PlayerUpdateComponent", "PlayerInputComponent"],
+			"framesOfAnimation" : 6
+		},
+		"0" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "grass",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"1" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "grassCornerLeft",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"2" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "grassCornerRight",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"3" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "grassCornerRocky",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"4" : {
+			"tag" : "no collision",
+			"bitmapName" : "caveWallOne",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"5" : {
+			"tag" : "no collision",
+			"bitmapName" : "caveWall",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"6" : {
+			"tag" : "no collision",
+			"bitmapName" : "caveWallTwo",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"7" : {
+			"tag" : "level completed",
+			"bitmapName" : "caveBackgroundHole",
+			"speed" : 0.0,
+			"width" : 2.0,
+			"height" : 2.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"8" : {
+			"tag" : "no collision",
+			"bitmapName" : "mushrooms",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"9" : {
+			"tag" : "no collision",
+			"bitmapName" : "grassForeground",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"a" : {
+			"tag" : "no collision",
+			"bitmapName" : "bushForeground",
+			"speed" : 0.0,
+			"width" : 2.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"b" : {
+			"tag" : "no collision",
+			"bitmapName" : "bushBackground",
+			"speed" : 0.0,
+			"width" : 2.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"c" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "platform",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"d" : {
+			"tag" : "no collision",
+			"bitmapName" : "woodPillar",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"e" : {
+			"tag" : "no collision",
+			"bitmapName" : "mineralBlue",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"f" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "mud",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"g" : {
+			"tag" : "no collision",
+			"bitmapName" : "houseBackground",
+			"speed" : 0.0,
+			"width" : 3.0,
+			"height" : 3.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"h" : {
+			"tag" : "no collision",
+			"bitmapName" : "houseForeground",
+			"speed" : 0.0,
+			"width" : 3.0,
+			"height" : 3.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"i" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "mudOne",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"j" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "mudTwo",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"k" : {
+			"tag" : "no collision",
+			"bitmapName" : "caveWallRight",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"l" : {
+			"tag" : "no collision",
+			"bitmapName" : "caveWallLeft",
+			"speed" : 0.0,
+			"width" : 1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"m" : {
+			"tag" : "Background",
+			"bitmapName" : "backgroundSky",
+			"speed" : 2.0,
+			"width" :  68.0,
+			"height" : 80.0,
+			"components" : ["BackgroundGraphicsComponent", "BackgroundUpdateComponent"],
+			"framesOfAnimation" : 0
+		}
+	}
+]
+
