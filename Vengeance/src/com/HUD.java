@@ -24,6 +24,9 @@ final class HUD {
 	// Start Screen Buttons
 	private Image mMenuBitmap;
 	private Image mTitleBitmap;
+	private Image mOptionsTextBitmap;
+	private Image mLevelsBitmap;
+	private Image mCustomizationTextBitmap;
 	private Image mVersionBitmap;
 	private Image mCurrencyBitmap;
 	private Image mStartButtonBitmap;
@@ -107,6 +110,10 @@ final class HUD {
 			// Title Bitmap
 			mTitleBitmap = ImageIO.read(new File(path + "/UI/TitleBitmap.png"));
 			mVersionBitmap = ImageIO.read(new File(path + "/UI/VersionText.png"));
+			mOptionsTextBitmap = ImageIO.read(new File(path + "/UI/OptionsBitmap.png"));
+			mLevelsBitmap = ImageIO.read(new File(path + "/UI/LevelsBitmap.png"));
+			mCustomizationTextBitmap = ImageIO.read(new File(path + "/UI/CustomTextBitmap.png"));
+			
 			
 			// UI Bitmaps
 			mMenuBitmap = ImageIO.read(new File(path + "/backgroundSky.png"));
@@ -368,12 +375,11 @@ final class HUD {
 				(int)(mScreenWidth * 0.094f), (int)(mScreenHeight * 0.22f), 
 				(int)(mScreenWidth * 0.81f), (int)(mScreenHeight * 0.72f), null);
 		
-		g.setColor(new Color(255, 255, 255, 255));
-		String titleText = "Levels";
-		g.setFont(new Font("Arial", Font.PLAIN, 36));
-		int titleTextWidth = g.getFontMetrics().stringWidth(titleText);
-		
-		g.drawString(titleText, (mScreenWidth / 2) - (titleTextWidth / 2), g.getFont().getSize());
+		g.drawImage(mLevelsBitmap, 
+				(int)((mScreenWidth * 0.5f) - ((mScreenWidth * 0.15f) / 2)), 
+				(int)(mScreenHeight * 0.12f), 
+				(int)(mScreenWidth * 0.15f), 
+				(int)(mScreenHeight * 0.04f), null);
 		
 		g.setColor(new Color(0 ,0, 0, 100));
 		int i = 0;
@@ -406,12 +412,11 @@ final class HUD {
 				(int)(mScreenWidth * 0.094f), (int)(mScreenHeight * 0.22f), 
 				(int)(mScreenWidth * 0.81f), (int)(mScreenHeight * 0.72f), null);
 		
-		g.setColor(new Color(255, 255, 255, 255));
-		String titleText = "Options";
-		g.setFont(new Font("Arial", Font.PLAIN, 36));
-		int titleTextWidth = g.getFontMetrics().stringWidth(titleText);
-		
-		g.drawString(titleText, (mScreenWidth / 2) - (titleTextWidth / 2), g.getFont().getSize());
+		g.drawImage(mOptionsTextBitmap, 
+				(int)((mScreenWidth * 0.5f) - ((mScreenWidth * 0.17f) / 2)), 
+				(int)(mScreenHeight * 0.12f), 
+				(int)(mScreenWidth * 0.17f), 
+				(int)(mScreenHeight * 0.04f), null);
 		
 		g.drawImage(mBackButtonBitmap, 
 				(int)mLevelMenuBackButton.x, 
@@ -432,12 +437,11 @@ final class HUD {
 				(int)(mScreenWidth * 0.094f), (int)(mScreenHeight * 0.22f), 
 				(int)(mScreenWidth * 0.81f), (int)(mScreenHeight * 0.72f), null);
 		
-		g.setColor(new Color(255, 255, 255, 255));
-		String titleText = "Character Customization";
-		g.setFont(new Font("Arial", Font.PLAIN, 36));
-		int titleTextWidth = g.getFontMetrics().stringWidth(titleText);
-		
-		g.drawString(titleText, (mScreenWidth / 2) - (titleTextWidth / 2), g.getFont().getSize());
+		g.drawImage(mCustomizationTextBitmap, 
+				(int)((mScreenWidth * 0.5f) - ((mScreenWidth * 0.565f) / 2)), 
+				(int)(mScreenHeight * 0.12f), 
+				(int)(mScreenWidth * 0.565f), 
+				(int)(mScreenHeight * 0.04f), null);
 		
 		g.drawImage(mBackButtonBitmap, 
 				(int)mLevelMenuBackButton.x, 
