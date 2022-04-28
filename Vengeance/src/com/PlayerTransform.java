@@ -46,25 +46,25 @@ class PlayerTransform extends Transform {
 		float objectHeight = getSize().y;
 	
 		//Feet
-		mColliders.get(0).x = location.x + (objectWidth * FIFTH);
-		mColliders.get(0).y = location.y + objectHeight - (objectHeight * FIFTH);
-		mColliders.get(0).width = objectWidth - ((objectWidth * FIFTH) * 2);
+		mColliders.get(0).x = location.x + (objectWidth * 0.45f);
+		mColliders.get(0).y = location.y + objectHeight - (objectHeight * 0.15f);
+		mColliders.get(0).width = objectWidth - ((objectWidth * 0.45f) * 2);
 		mColliders.get(0).height = (objectHeight * FIFTH);
 		// Head
-		mColliders.get(1).x = location.x + ((objectWidth * FIFTH)) ;
+		mColliders.get(1).x = location.x + ((objectWidth * 0.45f)) ;
 		mColliders.get(1).y = location.y;
-		mColliders.get(1).width = objectWidth - ((objectWidth * FIFTH) * 2) ;
+		mColliders.get(1).width = objectWidth - ((objectWidth * 0.45f) * 2) ;
 		mColliders.get(1).height = (objectHeight * FIFTH);
 		// Right
 		mColliders.get(2).x = location.x + objectWidth - (objectWidth * FIFTH);
-		mColliders.get(2).y = location.y + (objectHeight * 0.55f);
+		mColliders.get(2).y = location.y + (objectHeight * 0.45f);
 		mColliders.get(2).width = (objectWidth) * (FIFTH);
-		mColliders.get(2).height = (objectHeight - ((objectHeight * 0.55f) * 2));
+		mColliders.get(2).height = (objectHeight - ((objectHeight * 0.45f) * 2));
 		// Left
 		mColliders.get(3).x = location.x;
-		mColliders.get(3).y = location.y + (objectHeight * 0.55f);
+		mColliders.get(3).y = location.y + (objectHeight * 0.45f);
 		mColliders.get(3).width = (objectWidth) * FIFTH;
-		mColliders.get(3).height = (objectHeight - ((objectHeight * 0.55f) * 2));
+		mColliders.get(3).height = (objectHeight - ((objectHeight * 0.45f) * 2));
 	}
 	
 	void triggerJump() {

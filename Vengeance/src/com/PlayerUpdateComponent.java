@@ -54,6 +54,7 @@ class PlayerUpdateComponent implements UpdateComponent {
 			}
 			else if (System.currentTimeMillis() > mJumpStartTime + (MAX_JUMP_TIME * 1.2)) {
 				mIsJumping = false;
+				pt.handlingJump();
 			}
 		}
 		

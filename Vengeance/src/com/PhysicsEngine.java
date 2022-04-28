@@ -89,6 +89,20 @@ class PhysicsEngine {
 									playersLocation.y = (testedTransform.getLocation().y) 
 											- (playersTransform.getSize().y);
 									break;
+								case "corner with 2":
+									if (!playersPlayerTransform.isGrounded()) {
+										playersTransform.stopMovingRight();
+										playersLocation.x = testedTransform.getLocation().x
+												- playersTransform.getSize().x;
+									}
+									break;
+								case "corner with 3":
+									if (!playersPlayerTransform.isGrounded()) {
+										playersTransform.stopMovingLeft();
+										playersLocation.x = testedTransform.getLocation().x
+												+ playersTransform.getSize().x;
+									}
+									break;
 								case "death with 0":
 									gs.death();
 									break;

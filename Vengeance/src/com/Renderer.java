@@ -69,5 +69,10 @@ class Renderer {
 
 		g.drawRect((int)rect_3.x, (int)rect_3.y, (int)rect_3.width, (int)rect_3.height);
 		g.drawRect((int)rect_4.x, (int)rect_4.y, (int)rect_4.width, (int)rect_4.height);
+		
+		g.setColor(new Color(255, 255, 255, 255));
+		RectangleF rect_5 = new RectangleF(mCamera.worldToScreen(pTran.getCollider().x, pTran.getCollider().y, pTran.getCollider().width, pTran.getCollider().height));
+
+		g.drawRect((int)rect_5.x, (int)rect_5.y, (int)rect_5.width, (int)rect_5.height);
 	}
 }
