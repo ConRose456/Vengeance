@@ -84,6 +84,11 @@ class PhysicsEngine {
 								case "level completed with 3":
 									gs.levelCompleted();
 									break;
+								case "corner with 0":
+									playersPlayerTransform.grounded();
+									playersLocation.y = (testedTransform.getLocation().y) 
+											- (playersTransform.getSize().y);
+									break;
 								case "death with 0":
 									gs.death();
 									break;

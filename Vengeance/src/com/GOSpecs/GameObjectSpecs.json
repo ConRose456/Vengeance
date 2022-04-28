@@ -37,7 +37,7 @@
 			"framesOfAnimation" : 0
 		},
 		"3" : {
-			"tag" : "Inert tile",
+			"tag" : "corner",
 			"bitmapName" : "grassCornerRocky",
 			"speed" : 0.0,
 			"width" : 1.0,
@@ -190,7 +190,7 @@
 			"framesOfAnimation" : 0
 		},
 		"k" : {
-			"tag" : "no collision",
+			"tag" : "Inert tile",
 			"bitmapName" : "caveWallRight",
 			"speed" : 0.0,
 			"width" : 1.0,
@@ -199,7 +199,7 @@
 			"framesOfAnimation" : 0
 		},
 		"l" : {
-			"tag" : "no collision",
+			"tag" : "Inert tile",
 			"bitmapName" : "caveWallLeft",
 			"speed" : 0.0,
 			"width" : 1.0,
@@ -214,6 +214,151 @@
 			"width" :  68.0,
 			"height" : 80.0,
 			"components" : ["BackgroundGraphicsComponent", "BackgroundUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"n" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "Rock_01",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"o" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "Rock_02",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"q" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "Rock_03",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"r" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "Rock_04",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"s" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "Rock_05",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"t" : {
+			"tag" : "corner",
+			"bitmapName" : "Rock_06",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"u" : {
+			"tag" : "corner",
+			"bitmapName" : "Rock_07",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"v" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "Rock_08",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"w" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "PurpleGrass",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"x" : {
+			"tag" : "corner",
+			"bitmapName" : "PurpleGrassRight",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"y" : {
+			"tag" : "corner",
+			"bitmapName" : "PurpleGrassLeft",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"z" : {
+			"tag" : "no collision",
+			"bitmapName" : "PurpleGrassForeground",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		">" : {
+			"tag" : "corner",
+			"bitmapName" : "GrassCornerRockyRight",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		"<" : {
+			"tag" : "Inert tile",
+			"bitmapName" : "Rock_09",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		},
+		";" : {
+			"tag" : "no collision",
+			"bitmapName" : "CaveWallRight",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
+			"framesOfAnimation" : 0
+		}
+		,
+		":" : {
+			"tag" : "no collision",
+			"bitmapName" : "CaveWallLeft",
+			"speed" : 0.0,
+			"width" :  1.0,
+			"height" : 1.0,
+			"components" : ["InanimateGraphicsComponent", "InanimateUpdateComponent"],
 			"framesOfAnimation" : 0
 		}
 	}
