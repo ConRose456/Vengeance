@@ -32,7 +32,7 @@ class UIController implements InputObserver {
 			}
 		}
 		else if (gs.isGameOver() && gs.isPaused()) {
-			if (key == KeyEvent.VK_SPACE) {
+			if (key == KeyEvent.VK_ENTER) {
 				gs.setCurrentLevel(gs.getHighestReachedLevel());
 				gs.startNewGame();
 			}

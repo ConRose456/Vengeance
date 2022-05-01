@@ -1,13 +1,18 @@
 package com.LevelBuilder;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,8 +20,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import com.BitmapStore;
@@ -28,49 +35,84 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 	
 	private static final long serialVersionUID = -2080207661414913899L;
 	
-	private final int WIDTH = 800;
 	private final int HEIGHT = 500;
+	private final int GRID_WIDTH = 800;
+	private final int SCREEN_WIDTH = 1000;
 	
 	private Thread thread = null;
 	
 	private int cellSize = 15;
 	
-	private char objectType = '0';
+	private int currentObject = 0;
 	
-	private ArrayList<String> map = new ArrayList<>();
-	private ArrayList<String> background = new ArrayList<>();
+	private ArrayList<List<List<Integer>>> levelData = new ArrayList<>();
+	private ArrayList<String> bitmapNames = new ArrayList<>();
+	
+	private HashMap<Integer, Image> images = new HashMap<>();
+	private HashMap<String, PointF> gameObjects = new HashMap<>();
 	
 	private boolean isBackground = false;
 	
+	private ArrayList<Rectangle> buttons;
+	
+	private LevelBuilderRenderer renderer;
+	private InputObserver inputObserver;
+	
 	LevelBuilderPanel() {
-		BitmapStore bs = BitmapStore.getInstance();
-		JSONReader js = JSONReader.getInstance();
 		
-		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		JSONReader jsonReader = JSONReader.getInstance();
+		
+		this.setPreferredSize(new Dimension(SCREEN_WIDTH, HEIGHT));
 		this.setFocusable(true);
 		this.addKeyListener(this);
 		this.addMouseListener(this);
+
+		List<List<Integer>> layerR = new ArrayList<>();
+		List<List<Integer>> layerG = new ArrayList<>();
+		List<List<Integer>> layerB = new ArrayList<>();
 		
-		HashMap<String, PointF> data = JSONReader.loadGameObjectsLevelBuilder();
+		levelData.add(layerR);
+		levelData.add(layerG);
+		levelData.add(layerB);
+		
+		for (int y = 0; y < HEIGHT / cellSize; y++) {
+			levelData.get(0).add(new ArrayList<>());
+			levelData.get(1).add(new ArrayList<>());
+			levelData.get(2).add(new ArrayList<>());
+			for (int x = 0; x < GRID_WIDTH; x += cellSize) {
+				levelData.get(0).get(y).add(255);
+				levelData.get(1).get(y).add(255);
+				levelData.get(2).get(y).add(255);
+			}
+		}
+		
+		gameObjects = JSONReader.getData();
+		bitmapNames = JSONReader.getBitmapNames();
+		
 		String path = System.getProperty("user.dir") + "/res/images/";
-		
-		File[] images = new File(path).listFiles();
-		for (File img : images) {
-			String fileName = img.getName();
-			if (fileName.length() > 4) {
-				String name = img.getName().substring(0, img.getName().length() - 4);
-				BitmapStore.addBitmap(name, data.get(name), cellSize, false);
+		for (int i = 0; i < gameObjects.size(); i++) {
+			try { 
+				images.put(i, ImageIO.read(new File(path + bitmapNames.get(i) + ".png")));
+				System.out.println(i + "   :   Name: " + bitmapNames.get(i));
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		
-		for (int i = 0; i < HEIGHT / cellSize; i++) {
-			String temp = "";
-			for (int j = 0; j < WIDTH / cellSize; j++) {
-				temp += ".";
+		this.buttons = new ArrayList<>();
+		
+		int verticalBuffer = 50;
+		int buffer = 10;
+		for (int y = 0; y < 10; y++) {
+			for (int x = 0; x < 5; x++) {
+				buttons.add(new Rectangle(GRID_WIDTH + 10 + (40 * x), 50 + (40 * y), 20, 20));
 			}
-			map.add(temp);
-			background.add(temp);
 		}
+		
+		this.inputObserver = new InputObserver(this,
+				new Point(SCREEN_WIDTH, HEIGHT), new Point(GRID_WIDTH, HEIGHT), cellSize);
+		this.renderer = new LevelBuilderRenderer(new Point(SCREEN_WIDTH, HEIGHT), new Point(GRID_WIDTH, HEIGHT),
+				cellSize, levelData, images);
 		
 		startThread();
 	}
@@ -83,337 +125,70 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 	@Override
 	public void run() {
 		while (true) {
-			update();
 			repaint();
 		}
 	}
 	
 	@Override
 	public void paint(Graphics g) {
-		g.setColor(new Color(100, 100, 100, 255));
-		g.fillRect(0, 0, WIDTH, HEIGHT);
-		
-		g.setColor(new Color(255, 255, 255, 255));
-		for (int i = cellSize; i < WIDTH; i+=cellSize) {
-			g.drawLine(i, 0, i, HEIGHT);
-		}
-		for (int i = cellSize; i < HEIGHT; i+=cellSize) {
-			g.drawLine(0, i, WIDTH, i);
-		}
-		
-		for (int i = 0; i < background.size(); i++) {
-			for (int j = 0; j < background.get(i).length(); j++) {
-				switch(background.get(i).charAt(j)) {
-				case 'p':
-					g.drawImage(BitmapStore.getBitmap("p"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '0':
-					g.drawImage(BitmapStore.getBitmap("grass"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '1':
-					g.drawImage(BitmapStore.getBitmap("GrassCornerLeft"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '2':
-					g.drawImage(BitmapStore.getBitmap("GrassCornerRight"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '3':
-					g.drawImage(BitmapStore.getBitmap("GrassCornerRocky"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '4':
-					g.drawImage(BitmapStore.getBitmap("CaveWallOne"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '5':
-					g.drawImage(BitmapStore.getBitmap("CaveWall"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '6':
-					g.drawImage(BitmapStore.getBitmap("CaveWallTwo"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '7':
-					g.drawImage(BitmapStore.getBitmap("CaveBackgroundHole"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '8':
-					g.drawImage(BitmapStore.getBitmap("Mushrooms"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '9':
-					g.drawImage(BitmapStore.getBitmap("GrassForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'a':
-					g.drawImage(BitmapStore.getBitmap("BushForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'b':
-					g.drawImage(BitmapStore.getBitmap("BushBackground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'c':
-					g.drawImage(BitmapStore.getBitmap("Platform"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'd':
-					g.drawImage(BitmapStore.getBitmap("WoodPillar"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'e':
-					g.drawImage(BitmapStore.getBitmap("MineralBlue"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'f':
-					g.drawImage(BitmapStore.getBitmap("Mud"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'g':
-					g.drawImage(BitmapStore.getBitmap("HouseBackground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'h':
-					g.drawImage(BitmapStore.getBitmap("HouseForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'i':
-					g.drawImage(BitmapStore.getBitmap("MudOne"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'j':
-					g.drawImage(BitmapStore.getBitmap("MudTwo"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'k':
-					g.drawImage(BitmapStore.getBitmap("CaveWallRight"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'l':
-					g.drawImage(BitmapStore.getBitmap("CaveWallLeft"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '.':
-					break;
-				}
-			}
-		}
-		
-		for (int i = 0; i < map.size(); i++) {
-			for (int j = 0; j < map.get(i).length(); j++) {
-				switch(map.get(i).charAt(j)) {
-				case 'p':
-					g.drawImage(BitmapStore.getBitmap("p"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '0':
-					g.drawImage(BitmapStore.getBitmap("grass"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '1':
-					g.drawImage(BitmapStore.getBitmap("GrassCornerLeft"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '2':
-					g.drawImage(BitmapStore.getBitmap("GrassCornerRight"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '3':
-					g.drawImage(BitmapStore.getBitmap("GrassCornerRocky"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '4':
-					g.drawImage(BitmapStore.getBitmap("CaveWallOne"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '5':
-					g.drawImage(BitmapStore.getBitmap("CaveWall"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '6':
-					g.drawImage(BitmapStore.getBitmap("CaveWallTwo"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '7':
-					g.drawImage(BitmapStore.getBitmap("CaveBackgroundHole"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '8':
-					g.drawImage(BitmapStore.getBitmap("Mushrooms"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '9':
-					g.drawImage(BitmapStore.getBitmap("GrassForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'a':
-					g.drawImage(BitmapStore.getBitmap("BushForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'b':
-					g.drawImage(BitmapStore.getBitmap("BushBackground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'c':
-					g.drawImage(BitmapStore.getBitmap("Platform"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'd':
-					g.drawImage(BitmapStore.getBitmap("WoodPillar"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'e':
-					g.drawImage(BitmapStore.getBitmap("MineralBlue"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'f':
-					g.drawImage(BitmapStore.getBitmap("Mud"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'g':
-					g.drawImage(BitmapStore.getBitmap("HouseBackground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'h':
-					g.drawImage(BitmapStore.getBitmap("HouseForeground"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'i':
-					g.drawImage(BitmapStore.getBitmap("MudOne"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'j':
-					g.drawImage(BitmapStore.getBitmap("MudTwo"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'k':
-					g.drawImage(BitmapStore.getBitmap("CaveWallRight"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case 'l':
-					g.drawImage(BitmapStore.getBitmap("CaveWallLeft"), j * cellSize, i * cellSize, cellSize, cellSize, null);
-					break;
-				case '.':
-					break;
-				}
-			}
-		}
-	}
-	
-	private void update() {
-		
+		renderer.draw(g, buttons);
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-	
-		switch (key) {
-		case KeyEvent.VK_P:
-			objectType = 'p';
-			break;
-		case KeyEvent.VK_0:
-			objectType = '0';
-			break;
-		case KeyEvent.VK_1:
-			objectType = '1';
-			break;
-		case KeyEvent.VK_2:
-			objectType = '2';
-			break;
-		case KeyEvent.VK_3:
-			objectType = '3';
-			break;
-		case KeyEvent.VK_4:
-			objectType = '4';
-			break;
-		case KeyEvent.VK_5:
-			objectType = '5';
-			break;
-		case KeyEvent.VK_6:
-			objectType = '6';
-			break;
-		case KeyEvent.VK_7:
-			objectType = '7';
-			break;
-		case KeyEvent.VK_8:
-			objectType = '8';
-			break;
-		case KeyEvent.VK_9:
-			objectType = '9';
-			break;
-		case KeyEvent.VK_A:
-			objectType = 'a';
-			break;
-		case KeyEvent.VK_B:
-			objectType = 'b';
-			break;
-		case KeyEvent.VK_C:
-			objectType = 'c';
-			break;
-		case KeyEvent.VK_D:
-			objectType = 'd';
-			break;
-		case KeyEvent.VK_E:
-			objectType = 'e';
-			break;
-		case KeyEvent.VK_F:
-			objectType = 'f';
-			break;
-		case KeyEvent.VK_G:
-			objectType = 'g';
-			break;
-		case KeyEvent.VK_H:
-			objectType = 'h';
-			break;
-		case KeyEvent.VK_I:
-			objectType = 'i';
-			break;
-		case KeyEvent.VK_J:
-			objectType = 'j';
-			break;
-		case KeyEvent.VK_K:
-			objectType = 'k';
-			break;
-		case KeyEvent.VK_L:
-			objectType = 'l';
-			break;
-		case KeyEvent.VK_PERIOD:
-			objectType = '.';
-			break;
-		}
 		
 		if (key == KeyEvent.VK_ESCAPE) {
 			exportLevel();
 		}
-		if (key == KeyEvent.VK_TAB) {
-			importLevelFile();
-		}
-		if (key == KeyEvent.VK_SHIFT) {
-			isBackground = !isBackground;
-		}
+		inputObserver.keyInput(e);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		Point location = e.getPoint();
-		if (!isBackground) {
-			String temp = map.get((int)(location.y / cellSize));
-			String result = temp.substring(0, location.x / cellSize) + objectType + temp.substring(location.x / cellSize + 1);
-			map.set((int)(location.getY() / cellSize), result);
-		} else {
-			String temp_b = background.get((int)(location.y / cellSize));
-			String result_b = temp_b.substring(0, location.x / cellSize) + objectType + temp_b.substring(location.x / cellSize + 1);
-			background.set((int)(location.getY() / cellSize), result_b);
-		}
+		inputObserver.mouseInput(e, buttons, levelData);
+	}
+	
+	void setCurrentObject(int currentObject) {
+		this.currentObject = currentObject;
+	}
+	
+	int getCurrentObject() {
+		return this.currentObject;
+	}
+	
+	void updateLevelData(ArrayList<List<List<Integer>>> newLevelData) {
+		this.levelData = newLevelData;
 	}
 	
 	private void exportLevel() {
+		BufferedImage image = new BufferedImage(2, 1, BufferedImage.TYPE_INT_RGB);
+		Graphics g = image.getGraphics();
+		
+		for (int y = 0; y < levelData.get(0).size(); y++) {
+			for (int x = 0; x < levelData.get(0).get(y).size(); x++) {
+				
+				System.out.println(levelData.get(0).get(y).get(x));
+				
+				g.setColor(new Color(
+					levelData.get(0).get(y).get(x), 
+					levelData.get(1).get(y).get(x), 
+					levelData.get(2).get(y).get(x)));
+				g.fillRect(x, y, 1, 1);
+			}
+		}
+				
 		try {
-			FileWriter exportToFile = new FileWriter("LevelBuilder_New_Map.txt");
-			for (int i = 0; i < map.size(); i++) {
-				exportToFile.write("tiles.add(\"" + map.get(i) + "\");\n");
-			}
-			
-			exportToFile.write("...........background...\n");
-			
-			for (int i = 0; i < background.size(); i++) {
-				exportToFile.write("backgroundTiles.add(\"" + background.get(i) + "\");\n");
-			}
-			
-			exportToFile.close();
-			System.out.println("LevelBuilder Completed Level Saved!");
+			ImageIO.write(image, "PNG", new File("levelImage.png"));
+			System.out.println("Completed");
 		} catch (IOException e) {
-			System.out.println("LevelBuilder Failed!");
+			System.out.println("Didnt work");
 			e.printStackTrace();
 		}
-		
 	}
 	
 	private void importLevelFile() {
-		map.clear();
-		//background.clear();
 		
-		boolean inBackground = false;
-		try {
-			File file = new File("LevelBuilder_New_Map.txt");
-			Scanner scanner = new Scanner(file);
-			while (scanner.hasNextLine()) {
-				String data = scanner.nextLine();
-				System.out.println(data);
-				if (data == "...........background...") {
-					inBackground = true;
-					System.out.println("true");
-				} else {
-					if (!inBackground) {
-						map.add(data.substring(11, data.length() - 3));
-					} else {
-						background.add(data.substring(11, data.length() - 3));
-					}
-				}
-				
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	@Override

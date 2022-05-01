@@ -15,7 +15,7 @@ class Platformer {
 	
 	private Platformer() throws IOException {
 		mFrame = new JFrame("Vengeance");
-		mGameEngine = new GameEngine();
+		mGameEngine = new GameEngine(mFrame);
 		
 		String path = System.getProperty("user.dir") + "/res/images/UI/FrameIcon.png";
 		Image playerIcon = ImageIO.read(new File(path));
@@ -31,7 +31,7 @@ class Platformer {
 		e.printStackTrace();
 		
 		mFrame = new JFrame("Vengeance");
-		mGameEngine = new GameEngine();
+		mGameEngine = new GameEngine(mFrame);
 
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mFrame.setResizable(false);

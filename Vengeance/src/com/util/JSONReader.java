@@ -3,6 +3,7 @@ package com.util;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.simple.JSONArray;
@@ -18,6 +19,7 @@ public class JSONReader {
 	private static JSONArray levelBuilderList = new JSONArray();
 	
 	private static HashMap<String, PointF> data = new HashMap<String, PointF>();
+	private static ArrayList<String> bitmapNames = new ArrayList<>();
 
 	private static JSONReader mOurInstance;
 
@@ -42,48 +44,12 @@ public class JSONReader {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static HashMap<String, PointF> loadGameObjectsLevelBuilder() {
-
-		JSONParser parser = new JSONParser();
-		String path = System.getProperty("user.dir") + "/src/com/GOSpecs/";
-
-		try (FileReader reader = new FileReader(path + "GameObjectSpecs.json")) {
-			Object object = parser.parse(reader);
-			levelBuilderList = (JSONArray) object;
-			
-			int i = 48;
-			for (Object obj : levelBuilderList) {
-				JSONObject jsonObj = (JSONObject) obj;
-				System.out.println(Character.toString(i));
-				JSONObject newObj = (JSONObject) jsonObj.get(Character.toString(i));
-				
-				Double width = (Double) newObj.get("width");
-				Double height = (Double) newObj.get("height");
-				PointF size = new PointF(width.floatValue(), height.floatValue());
-
-				data.put((String) newObj.get("bitmapName"), size);
-				if (i == 109) {
-					i = 112;
-				} else if (i == 57) {
-					i = 97;
-				} else {
-					i++;
-				}
-			}
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-		}
-
-		return data;
-	}
-
-	public static GameObjectSpec getObjectSpec(String id) {
+	public static GameObjectSpec getObjectSpec(Integer id) {
 		return parseGameObject((JSONObject) objectList.get(0), id);
 	}
 
-	private static GameObjectSpec parseGameObject(JSONObject object, String id) {
-		JSONObject gameObject = (JSONObject) object.get(id);
+	private static GameObjectSpec parseGameObject(JSONObject object, int id) {
+		JSONObject gameObject = (JSONObject) object.get("" + id);
 
 		String tag = (String) gameObject.get("tag");
 		String bitmapName = (String) gameObject.get("bitmapName");
@@ -103,5 +69,29 @@ public class JSONReader {
 			String[] components = { (String) array.get(0), (String) array.get(1) };
 			return new GameObjectSpec(tag, bitmapName, speed.floatValue(), size, components, (int) framesOfAnimation);
 		}
+	}
+	
+	public static HashMap<String, PointF> getData() {
+		for (int i = 0; i < 40; i++) {
+			addGameObject((JSONObject) objectList.get(0), i);
+		}
+		return data;
+	}
+	
+	private  static void addGameObject(JSONObject object, int id) {
+		JSONObject gameObject = (JSONObject) object.get("" + id);
+
+		String bitmapName = (String) gameObject.get("bitmapName");
+
+		Double width = (Double) gameObject.get("width");
+		Double height = (Double) gameObject.get("height");
+
+		PointF size = new PointF(width.floatValue(), height.floatValue());
+		data.put(bitmapName, size);
+		bitmapNames.add(bitmapName);
+	}
+	
+	public static ArrayList<String> getBitmapNames() {
+		return bitmapNames;
 	}
 }

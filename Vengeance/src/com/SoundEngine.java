@@ -21,13 +21,13 @@ class SoundEngine {
 		return mOurInstance;
 	}
 	
-	private Clip clip = null;
-	private AudioInputStream ais = null;
+	private static Clip clip = null;
+	private static AudioInputStream ais = null;
 	
 	private SoundEngine() {
 	}
 	
-	void setAudioFile(String fileName) {
+	static void setAudioFile(String fileName) {
 		try {
 			ais = AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") + "/res/audio/" + fileName));
 			clip = AudioSystem.getClip();
@@ -37,20 +37,20 @@ class SoundEngine {
 		}
 	}
 	
-	void playEffect(String fileName) {
+	static void playEffect(String fileName) {
 		setAudioFile(fileName);
 		play();
 	}
 	
-	private void play() {
+	private static void play() {
 		clip.start();
 	}
 	
-	void loop() {
+	static void loop() {
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 	
-	void stop() {
+	static void stop() {
 		clip.stop();
 	}
 }

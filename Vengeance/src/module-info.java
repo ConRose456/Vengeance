@@ -1,5 +1,5 @@
 module Platformer {
-	requires java.desktop;
+	requires transitive java.desktop;
 	requires json.simple;
 	exports com;
 	exports com.util;

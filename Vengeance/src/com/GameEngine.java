@@ -2,6 +2,7 @@ package com;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -10,9 +11,12 @@ import java.awt.event.MouseListener;
 import java.net.MalformedURLException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import com.util.JSONReader;
+import com.util.LevelReader;
 
 class GameEngine extends JPanel implements Runnable, GameEngineBroadcaster, EngineController,
 												KeyListener, MouseListener {
@@ -32,7 +36,6 @@ class GameEngine extends JPanel implements Runnable, GameEngineBroadcaster, Engi
 	private HUD mHud = null;
 	private LevelManager mLevelManager = null;
 	private UIController mUIController = null;
-	private JSONReader reader = null;
 	
 	private CopyOnWriteArrayList<InputObserver> mInputObservers = new CopyOnWriteArrayList<InputObserver>();
 	
@@ -42,8 +45,10 @@ class GameEngine extends JPanel implements Runnable, GameEngineBroadcaster, Engi
 	private BitmapStore bs = BitmapStore.getInstance();
 	private SoundEngine se = SoundEngine.getInstance();
 	
-	GameEngine() {
-		this.reader = JSONReader.getInstance();
+	GameEngine(JFrame frame) {
+		
+		JSONReader jsonReader = JSONReader.getInstance();
+		LevelReader levelReader = LevelReader.getInstance();
 		
 		this.mGameState = new GameState(this, se);
 		this.mRenderer = new Renderer(new Point(WIDTH, HEIGHT));
@@ -58,8 +63,8 @@ class GameEngine extends JPanel implements Runnable, GameEngineBroadcaster, Engi
 		this.addKeyListener(this);
 		this.addMouseListener(this);
 		
-		se.setAudioFile("background_music.wav");
-		se.loop();
+		SoundEngine.setAudioFile("background_music.wav");
+		SoundEngine.loop();
 		
 		startThread();
 	}
@@ -68,9 +73,9 @@ class GameEngine extends JPanel implements Runnable, GameEngineBroadcaster, Engi
 	public void startNewLevel() {
 		
 		BitmapStore.clearStore();
-		se.stop();
-		se.setAudioFile("background_music.wav");
-		se.loop();
+		SoundEngine.stop();
+		SoundEngine.setAudioFile("background_music.wav");
+		SoundEngine.loop();
 		
 		mInputObservers.clear();
 		mUIController.addObserver(this);
