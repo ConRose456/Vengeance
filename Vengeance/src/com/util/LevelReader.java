@@ -30,10 +30,14 @@ public class LevelReader {
 		path = System.getProperty("user.dir") + "/src/com/Levels/";
 	}
 	
-	public static ArrayList<List<List<Integer>>> readImg(int level) {
+	public static ArrayList<List<List<Integer>>> readImg(int level, boolean loadingLevelForGame) {
 		levelData = new ArrayList<>();
 		try {
-			image = ImageIO.read(new File(path + level + ".png"));
+			if (loadingLevelForGame) {
+				image = ImageIO.read(new File(path + level + ".png"));
+			} else {
+				image = ImageIO.read(new File("levelImage.png"));
+			}
 			
 			List<Integer> foregroundLayer;
 			List<Integer> middlegroundLayer;
@@ -57,9 +61,9 @@ public class LevelReader {
 					int blue = color.getBlue();
 					int alpha = color.getAlpha();
 					
-					foregroundLayer.add(red);
+					foregroundLayer.add(blue);
 					middlegroundLayer.add(green);
-					backgroundLayer.add(blue);
+					backgroundLayer.add(red);
 				}
 				foregroundData.add(foregroundLayer);
 				middlegroundData.add(middlegroundLayer);

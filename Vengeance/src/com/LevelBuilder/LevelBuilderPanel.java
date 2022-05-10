@@ -1,10 +1,8 @@
 package com.LevelBuilder;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -14,20 +12,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import com.BitmapStore;
 import com.util.JSONReader;
+import com.util.LevelReader;
 import com.util.PointF;
 
 
@@ -51,16 +45,19 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 	private HashMap<Integer, Image> images = new HashMap<>();
 	private HashMap<String, PointF> gameObjects = new HashMap<>();
 	
-	private boolean isBackground = false;
-	
 	private ArrayList<Rectangle> buttons;
+	private ArrayList<Rectangle> layerButtons; 
 	
 	private LevelBuilderRenderer renderer;
 	private InputObserver inputObserver;
 	
+	private int currentLayer = 1;
+	
 	LevelBuilderPanel() {
 		
+		@SuppressWarnings("unused")
 		JSONReader jsonReader = JSONReader.getInstance();
+		LevelReader lr = LevelReader.getInstance();
 		
 		this.setPreferredSize(new Dimension(SCREEN_WIDTH, HEIGHT));
 		this.setFocusable(true);
@@ -93,24 +90,25 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 		for (int i = 0; i < gameObjects.size(); i++) {
 			try { 
 				images.put(i, ImageIO.read(new File(path + bitmapNames.get(i) + ".png")));
-				System.out.println(i + "   :   Name: " + bitmapNames.get(i));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
 		this.buttons = new ArrayList<>();
+		this.layerButtons = new ArrayList<>();
 		
-		int verticalBuffer = 50;
-		int buffer = 10;
 		for (int y = 0; y < 10; y++) {
 			for (int x = 0; x < 5; x++) {
 				buttons.add(new Rectangle(GRID_WIDTH + 10 + (40 * x), 50 + (40 * y), 20, 20));
 			}
 		}
+		for (int i = 0; i < 3; i++) {
+			layerButtons.add(new Rectangle(GRID_WIDTH + 50 + (40 * i), HEIGHT - 50, 20, 20));
+		}
 		
 		this.inputObserver = new InputObserver(this,
-				new Point(SCREEN_WIDTH, HEIGHT), new Point(GRID_WIDTH, HEIGHT), cellSize);
+				new Point(SCREEN_WIDTH, HEIGHT), new Point(GRID_WIDTH, HEIGHT), cellSize, bitmapNames.size());
 		this.renderer = new LevelBuilderRenderer(new Point(SCREEN_WIDTH, HEIGHT), new Point(GRID_WIDTH, HEIGHT),
 				cellSize, levelData, images);
 		
@@ -131,7 +129,43 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 	
 	@Override
 	public void paint(Graphics g) {
-		renderer.draw(g, buttons);
+		renderer.draw(g, buttons, layerButtons, currentLayer);
+	}
+	
+	
+	
+	private void exportLevel() {
+		levelData = renderer.getLevelData();
+		
+		BufferedImage image = new BufferedImage(levelData.get(0).get(0).size(), levelData.get(0).size(), BufferedImage.TYPE_INT_RGB);
+		Graphics g = image.getGraphics();
+		
+		for (int y = 0; y < levelData.get(0).size(); y++) {
+			for (int x = 0; x < levelData.get(0).get(y).size(); x++) {
+				
+				g.setColor(new Color(
+					levelData.get(0).get(y).get(x), 
+					levelData.get(1).get(y).get(x), 
+					levelData.get(2).get(y).get(x), 
+					255));
+				
+				g.fillRect(x, y, 1, 1);
+			}
+		}
+				
+		try {
+			ImageIO.write(image, "PNG", new File("levelImage.png"));
+			System.out.println("Completed - Loaded level data Succesfully to PNG Image!");
+		} catch (IOException e) {
+			System.out.println("Didnt work");
+			e.printStackTrace();
+		}
+	}
+	
+	private void importLevelFile() {
+		levelData = LevelReader.readImg(0, false);
+		renderer.setLevelData(levelData);
+		System.out.println("Completed - Loaded level data Succesfully!");
 	}
 	
 	@Override
@@ -140,13 +174,15 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 		
 		if (key == KeyEvent.VK_ESCAPE) {
 			exportLevel();
+		} else if (key == KeyEvent.VK_1) {
+			importLevelFile();
 		}
 		inputObserver.keyInput(e);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		inputObserver.mouseInput(e, buttons, levelData);
+		inputObserver.mouseInput(e, buttons, layerButtons, levelData);
 	}
 	
 	void setCurrentObject(int currentObject) {
@@ -161,36 +197,13 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 		this.levelData = newLevelData;
 	}
 	
-	private void exportLevel() {
-		BufferedImage image = new BufferedImage(2, 1, BufferedImage.TYPE_INT_RGB);
-		Graphics g = image.getGraphics();
-		
-		for (int y = 0; y < levelData.get(0).size(); y++) {
-			for (int x = 0; x < levelData.get(0).get(y).size(); x++) {
-				
-				System.out.println(levelData.get(0).get(y).get(x));
-				
-				g.setColor(new Color(
-					levelData.get(0).get(y).get(x), 
-					levelData.get(1).get(y).get(x), 
-					levelData.get(2).get(y).get(x)));
-				g.fillRect(x, y, 1, 1);
-			}
-		}
-				
-		try {
-			ImageIO.write(image, "PNG", new File("levelImage.png"));
-			System.out.println("Completed");
-		} catch (IOException e) {
-			System.out.println("Didnt work");
-			e.printStackTrace();
-		}
+	int getCurrentLayer() {
+		return currentLayer;
 	}
 	
-	private void importLevelFile() {
-		
+	void updateLayer(int layer) {
+		this.currentLayer = layer;
 	}
-	
 	@Override
 	public void keyReleased(KeyEvent arg0) {}
 	@Override

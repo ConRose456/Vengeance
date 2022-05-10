@@ -51,7 +51,7 @@ class PhysicsEngine {
 									mSoundEngine.stop();
 									mSoundEngine.playEffect("collect_coin.wav");
 									break;
-								case "Coin with 3": // Collectible with Left
+								case "Collectible with 3": // Collectible with Left
 									go.setInactive();
 									gs.coinCollected();
 									

@@ -30,7 +30,7 @@ class LevelBuilderRenderer {
 		this.images = images;
 	}
 
-	void draw(Graphics g, ArrayList<Rectangle> buttons) {
+	void draw(Graphics g, ArrayList<Rectangle> buttons, ArrayList<Rectangle> layerButtons, int currentLayer) {
 		g.setColor(new Color(100, 100, 100, 255));
 		g.fillRect(0, 0, screenSize.x, screenSize.y);
 		
@@ -45,9 +45,25 @@ class LevelBuilderRenderer {
 		g.drawString("Game Objects", (int) (gridSize.x + (screenSize.x * 0.06f)), screenSize.y / 50);
 		
 		g.setColor(new Color(0, 0, 0, 100));
+		int i = 0;
 		for (Rectangle button : buttons) {
-			g.fillRect(button.x, button.y, button.width, button.height);
+			if (i < images.size()) {
+				g.drawImage(images.get(i), button.x, button.y, button.width, button.height, null);
+			} else {
+				g.fillRect(button.x, button.y, button.width, button.height);
+			}
+			i++;
 		}
+		
+		int j = 0;
+		for (Rectangle button : layerButtons) {
+			g.setColor(new Color(0, 0, 0, 100));
+			g.fillRect(button.x, button.y, button.width, button.height);
+			g.setColor(new Color(255, 255, 255, 255));
+			g.drawString("" + j, button.x, button.y + button.height);
+			j++;
+		}
+		
 		
 		g.setColor(new Color(0, 0, 0, 255));
 		Graphics2D g2d = (Graphics2D) g;
@@ -56,6 +72,10 @@ class LevelBuilderRenderer {
 		
 		for (int y = 0; y < levelData.get(0).size(); y++) {
 			for (int x = 0; x < levelData.get(0).get(y).size(); x++) {
+				if (levelData.get(1).get(y).get(x) > 39 && levelData.get(1).get(y).get(x) < 255) {
+					g.setColor(Color.WHITE);
+					g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+				}
 				g.drawImage(images.get(levelData.get(0).get(y).get(x)), 
 						x * cellSize, y * cellSize, cellSize, cellSize, null);
 				g.drawImage(images.get(levelData.get(1).get(y).get(x)), 
@@ -64,5 +84,16 @@ class LevelBuilderRenderer {
 						x * cellSize, y * cellSize, cellSize, cellSize, null);
 			}
 		}
+		
+		g.setColor(new Color(255, 255, 255, 255));
+		g.drawString("Layer: " + currentLayer, gridSize.x, gridSize.y);
+	}
+	
+	ArrayList<List<List<Integer>>> getLevelData() {
+		return levelData;
+	}
+	
+	void setLevelData(ArrayList<List<List<Integer>>> levelData) {
+		this.levelData = levelData;
 	}
 }

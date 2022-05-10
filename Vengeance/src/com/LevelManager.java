@@ -26,7 +26,7 @@ final class LevelManager {
 	}
 	
 	void setCurrentLevel(int level) {
-		levelData = LevelReader.readImg(level);
+		levelData = LevelReader.readImg(level, true);
 	}
 	
 	void buildGameObjects(GameState gs) {
@@ -40,7 +40,6 @@ final class LevelManager {
 					PointF coords = new PointF(x, y);
 					int objectId = layer.get(y).get(x);
 					if (objectId != 255) {
-						System.out.println(objectId);
 						objects.add(factory.create(JSONReader.getObjectSpec(objectId), coords));
 						if (objectId == 0) {
 							PLAYER_INDEX = objects.size() - 1;
