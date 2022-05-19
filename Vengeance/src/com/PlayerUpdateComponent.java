@@ -26,7 +26,6 @@ class PlayerUpdateComponent implements UpdateComponent {
 			location.x -= speed / fps;
 		}
 		
-		
 		if (pt.bumpedHead()) {
 			mIsJumping = false;
 			pt.handlingBumpedHead();

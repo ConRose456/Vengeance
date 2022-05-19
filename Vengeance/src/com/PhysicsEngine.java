@@ -104,7 +104,7 @@ class PhysicsEngine {
 									}
 									break;
 								case "death with 0":
-									gs.death();
+									gs.goHome();
 									break;
 								}
 							}

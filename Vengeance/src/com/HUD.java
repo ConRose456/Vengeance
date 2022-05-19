@@ -82,6 +82,21 @@ final class HUD {
 	private int mLevelMenuButtonHorizontalBuffer;
 	
 	
+	// Level Complete Buttons
+	private Image mLevelCompleteText;
+	private HashMap<String, RectangleF> mCompletedButtons = new HashMap<>();
+	
+	private int mRestartButtonWidth;
+	private int mRestartButtonY;
+	private int mRestartButtonX;
+	
+	private int mHomeButtonX;
+	private int mNextButtonX;
+	
+	private int mSideButtonsWidth;
+	private int mSideButtonY;
+	
+	
 	// Back Buttons Stuff
 	private Image mBackButtonBitmap;
 	
@@ -123,6 +138,7 @@ final class HUD {
 			mLevelMenuButtonBitmap = ImageIO.read(new File(path + "/UI/LevelMenuButton.png"));
 			mLevelMenuBackgroundBitmap = ImageIO.read(new File(path + "/UI/LevelMenuBackground.png"));
 			mLockedLevelBitmap = ImageIO.read(new File(path + "/UI/LockedLevel.png"));
+			mLevelCompleteText = ImageIO.read(new File(path + "/UI/LevelCompleteText.png"));
 			
 			// Start Screen Bitmaps
 			mStartButtonBitmap = ImageIO.read(new File(path + "/UI/StartButton.png"));
@@ -235,6 +251,21 @@ final class HUD {
 		this.mPauseMenuButtonMap.put("Resume", mPauseMenu_ResumeButton);
 		this.mPauseMenuButtonMap.put("Options", mPauseMenu_OptionsButton);
 		this.mPauseMenuButtonMap.put("Exit", mPauseMenu_ExitButton);
+		
+		// Completed Level Buttons	
+		this.mRestartButtonWidth = (int)(mScreenWidth * 0.1f);
+		this.mRestartButtonY = (int)(mScreenHeight * 0.56f);
+		this.mRestartButtonX = (int)(mScreenWidth * 0.45f);
+		
+		this.mHomeButtonX = (int)(mScreenWidth * 0.3375f);
+		this.mNextButtonX = (int)(mScreenWidth * 0.5875f);
+		
+		this.mSideButtonsWidth = (int)(mScreenWidth * 0.075f);
+		this.mSideButtonY = (int)(mScreenHeight * 0.58f);
+		
+		mCompletedButtons.put("Restart", new RectangleF(mRestartButtonX, mRestartButtonY, mRestartButtonWidth, mRestartButtonWidth));
+		mCompletedButtons.put("Home", new RectangleF(mHomeButtonX, mSideButtonY, mSideButtonsWidth, mSideButtonsWidth));
+		mCompletedButtons.put("NextLevel", new RectangleF(mNextButtonX, mSideButtonY, mSideButtonsWidth, mSideButtonsWidth));
 	}
 	
 	void draw(Graphics g, GameState gs) {
@@ -243,6 +274,9 @@ final class HUD {
 		
 		if (gs.isGameOver() && !gs.isPaused()) {
 			drawDeathScreen(g);
+		}
+		else if (!gs.isGameOver() && gs.isPaused() && gs.getLevelCompleted()) {
+			drawLevelComplete(g, gs);
 		}
 		else if (gs.isGameOver() && gs.isPaused()) {
 			drawMainMenu(g, gs);
@@ -456,6 +490,37 @@ final class HUD {
 				mMenuBuffer * 9 + (mCurrencyBitmap.getWidth(null) + 5), mCoinBufferVertical);
 	}
 	
+	private void drawLevelComplete(Graphics g, GameState gs) {
+		// Background
+		g.setColor(new Color(255, 255, 255, 255));		
+		g.drawImage(mLevelMenuBackgroundBitmap, 200, 100, 400, 300, null);
+		
+		// Buttons
+		g.setColor(new Color(0, 0, 0, 100));
+		g.fillRect(mRestartButtonX, mRestartButtonY, mRestartButtonWidth, mRestartButtonWidth); // Restart
+		g.fillRect(mHomeButtonX, mSideButtonY, mSideButtonsWidth, mSideButtonsWidth); // Home
+		g.fillRect(mNextButtonX, mSideButtonY, mSideButtonsWidth, mSideButtonsWidth); // Next Level
+		
+		// Text
+		g.drawImage(mLevelCompleteText, 256, 150, 288, 20, null);
+		
+		g.setColor(new Color(255, 255, 255, 255));
+		String GemText = "Gems: " + gs.getCoinsCollected();
+		g.setFont(new Font("Arial", Font.PLAIN, 18));
+		int textWidth = g.getFontMetrics().stringWidth(GemText) / 2;
+		
+		g.drawImage(mCurrencyBitmap, 400 - 15 - textWidth, 150 + 40, 30, 30, null);
+		g.drawString("Gems: " + gs.getCoinsCollected(), 415 - textWidth, 150 + 70);
+		
+		
+		
+		
+		String deathMessage = "Game Over";
+		g.setFont(new Font("Arial", Font.PLAIN, 24));
+		int deathTextWidth = g.getFontMetrics().stringWidth(deathMessage) / 2;
+		int deathTextHeight = g.getFont().getSize() / 10;
+	}
+	
 	public HashMap<String, RectangleF> getStartMenuButtons() {
 		return mStartMenuButtonMap;
 	}
@@ -490,5 +555,9 @@ final class HUD {
 	
 	public ArrayList<RectangleF> getLevelButtons() {
 		return mLevelMenuButtons;
+	}
+	
+	public HashMap<String, RectangleF> getCompletedLevelButtons() {
+		return mCompletedButtons;
 	}
 }

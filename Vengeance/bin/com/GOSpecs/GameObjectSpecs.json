@@ -2,7 +2,7 @@
 	{
 		"0": {
 			"tag": "Player",
-			"bitmapName": "player",
+			"bitmapName": "player/player",
 			"speed": 10.0,
 			"width": 1.0,
 			"height": 1.0,
@@ -458,20 +458,8 @@
 			"framesOfAnimation": 0
 		},
 		"38": {
-			"tag": "no collision",
-			"bitmapName": "CaveWallRight",
-			"speed": 0.0,
-			"width": 1.0,
-			"height": 1.0,
-			"components": [
-				"InanimateGraphicsComponent",
-				"InanimateUpdateComponent"
-			],
-			"framesOfAnimation": 0
-		},
-		"39": {
-			"tag": "no collision",
-			"bitmapName": "CaveWallLeft",
+			"tag": "level completed",
+			"bitmapName": "CheckPoint_On",
 			"speed": 0.0,
 			"width": 1.0,
 			"height": 1.0,

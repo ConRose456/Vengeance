@@ -31,14 +31,26 @@ class UIController implements InputObserver {
 				gs.flipPaused();
 			}
 		}
-		else if (gs.isGameOver() && gs.isPaused()) {
+		else if (gs.isGameOver() && gs.isPaused() && !gs.getLevelMenu() && !gs.getOptionsMenu() && !gs.getCustomMenu()) {
 			if (key == KeyEvent.VK_ENTER) {
+				gs.setCurrentLevel(gs.getHighestReachedLevel());
+				gs.startNewGame();
+			}
+		} else if (!gs.isGameOver() && gs.isPaused() && gs.getLevelCompleted()) {
+			if (key == KeyEvent.VK_H) {
+				gs.goHome();
+			}
+			else if (key == KeyEvent.VK_R) {
+				gs.setCurrentLevel(gs.getCurrentLevel());
+				gs.startNewGame();
+			}
+			else if (key == KeyEvent.VK_N) {
 				gs.setCurrentLevel(gs.getHighestReachedLevel());
 				gs.startNewGame();
 			}
 		} else if (!gs.isGameOver() && gs.isPaused()) {
 			if (key == KeyEvent.VK_S) {
-				gs.death();
+				gs.goHome();
 			}
 			if (key == KeyEvent.VK_ESCAPE) {
 				gs.flipPaused();
@@ -64,22 +76,33 @@ class UIController implements InputObserver {
 				gs.flipOptionsMenu();
 			} else if (mHud.getStartMenuButtons().get("Exit").contains(location)) {
 				System.exit(0);
-			}
-			
-			if (mHud.getMainMenu_LevelButton().contains(location)) {
+			} 
+			else if (mHud.getMainMenu_LevelButton().contains(location)) {
 				gs.flipLevelMenu();
 			} else if (mHud.getMainMenu_CustomizationButton().contains(location)) {
 				gs.flipCustomMenu();
 			} 
+		} else if (!gs.isGameOver() && gs.isPaused() && gs.getLevelCompleted()) {
+			if (mHud.getCompletedLevelButtons().get("Restart").contains(location)) {
+				gs.setCurrentLevel(gs.getCurrentLevel());
+				gs.startNewGame();
+			}
+			else if (mHud.getCompletedLevelButtons().get("Home").contains(location)) {
+				gs.goHome();
+			}
+			else if (mHud.getCompletedLevelButtons().get("NextLevel").contains(location)) {
+				gs.setCurrentLevel(gs.getHighestReachedLevel());
+				gs.startNewGame();
+			}
 		} else if (!gs.isGameOver() && gs.isPaused()) {
 			if (mHud.getPauseMenuButtons().get("Resume").contains(location)) {
 				gs.flipPaused();
-			}
-			if (mHud.getPauseMenuButtons().get("Options").contains(location)) {
+			} 
+			else if (mHud.getPauseMenuButtons().get("Options").contains(location)) {
 				gs.flipOptionsMenu();
 			}
-			if (mHud.getPauseMenuButtons().get("Exit").contains(location)) {
-				gs.death();
+			else if (mHud.getPauseMenuButtons().get("Exit").contains(location)) {
+				gs.goHome();
 			}
 		} else if (!gs.isGameOver() && !gs.isPaused()) {
 			if (mHud.getInGamePauseButton().contains(location)) {

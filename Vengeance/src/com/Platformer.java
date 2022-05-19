@@ -56,5 +56,4 @@ class Platformer {
 			new Platformer(e);
 		}
 	}
-	
 }

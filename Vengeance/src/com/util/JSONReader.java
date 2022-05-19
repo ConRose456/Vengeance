@@ -72,7 +72,7 @@ public class JSONReader {
 	}
 	
 	public static HashMap<String, PointF> getData() {
-		for (int i = 0; i < 40; i++) {
+		for (int i = 0; i < 39; i++) {
 			addGameObject((JSONObject) objectList.get(0), i);
 		}
 		return data;

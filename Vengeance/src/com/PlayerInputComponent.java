@@ -27,9 +27,6 @@ class PlayerInputComponent implements InputObserver {
 			case KeyEvent.VK_A:
 				mPlayersTransform.headLeft();
 				break;
-			case KeyEvent.VK_W:
-				mPlayersPlayerTransform.triggerJump();
-				break;
 			case KeyEvent.VK_RIGHT:
 				mPlayersTransform.headRight();
 				break;
@@ -37,6 +34,9 @@ class PlayerInputComponent implements InputObserver {
 				mPlayersTransform.headLeft();
 				break;
 			case KeyEvent.VK_UP:
+				mPlayersPlayerTransform.triggerJump();
+				break;
+			case KeyEvent.VK_W:
 				mPlayersPlayerTransform.triggerJump();
 				break;
 			}

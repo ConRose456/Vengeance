@@ -76,11 +76,11 @@ class LevelBuilderRenderer {
 					g.setColor(Color.WHITE);
 					g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
 				}
-				g.drawImage(images.get(levelData.get(0).get(y).get(x)), 
+				g.drawImage(images.get(levelData.get(2).get(y).get(x)), 
 						x * cellSize, y * cellSize, cellSize, cellSize, null);
 				g.drawImage(images.get(levelData.get(1).get(y).get(x)), 
 						x * cellSize, y * cellSize, cellSize, cellSize, null);
-				g.drawImage(images.get(levelData.get(2).get(y).get(x)), 
+				g.drawImage(images.get(levelData.get(0).get(y).get(x)), 
 						x * cellSize, y * cellSize, cellSize, cellSize, null);
 			}
 		}

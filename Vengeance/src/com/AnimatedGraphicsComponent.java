@@ -15,12 +15,18 @@ class AnimatedGraphicsComponent implements GraphicsComponent {
 	private Animator mAnimator;
 	private Rectangle mSectionToDraw;
 	
+	private int pixelsPerMetre;
+	private PointF objectSize;
+	
 	@Override
 	public void init(GameObjectSpec spec, PointF objectSize, int pixelsPerMetre) {
 		
 		float totalWidth = objectSize.x * spec.getFramesOfAnimation();
+		this.pixelsPerMetre = pixelsPerMetre;
+		this.objectSize = objectSize;
 		
 		mBitmapName = spec.getBitmapName();
+		System.out.println(mBitmapName);
 		BitmapStore.addBitmap(mBitmapName, new PointF(totalWidth, objectSize.y), pixelsPerMetre, true);
 		
 		mAnimator = new Animator(BitmapStore.getBitmap(mBitmapName), objectSize.y, objectSize.x,
@@ -47,7 +53,7 @@ class AnimatedGraphicsComponent implements GraphicsComponent {
 					mSectionToDraw.x, mSectionToDraw.y, 
 					mSectionToDraw.x + mSectionToDraw.width, 
 					mSectionToDraw.height, null);
-		} else {
+		} else if (!t.getFacingRight()) {
 			g.drawImage(BitmapStore.getBitmapReversed(mBitmapName), 
 					screenCoordinates.x + screenCoordinates.width, screenCoordinates.y, 
 					screenCoordinates.x - (screenCoordinates.width / 2), 
@@ -55,6 +61,6 @@ class AnimatedGraphicsComponent implements GraphicsComponent {
 					mSectionToDraw.x + mSectionToDraw.width, mSectionToDraw.y, 
 					mSectionToDraw.x + mSectionToDraw.width - mSectionToDraw.width, 
 					mSectionToDraw.height, null);
-		}
+		} 
 	}
 }

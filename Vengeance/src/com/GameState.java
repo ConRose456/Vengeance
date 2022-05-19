@@ -9,6 +9,9 @@ final class GameState {
 	private static volatile boolean mDrawing = false;
 	private EngineController mEngineController;
 	
+	private static volatile boolean mLevelCompleted = false;
+	private static volatile boolean mDead = false;
+	
 	private static volatile boolean mLevelMenu = false;
 	private static volatile boolean mOptionsMenu = false;
 	private static volatile boolean mCustomMenu = false;
@@ -29,6 +32,7 @@ final class GameState {
 	}
 	
 	void startNewGame() {
+		mLevelCompleted = false;
 		stopEverything();
 		mEngineController.startNewLevel();
 		startEverything();
@@ -115,15 +119,21 @@ final class GameState {
 		return mGameOver;
 	}
 	
-	void death() {
+	void goHome() {
+		mLevelCompleted = false;
 		mGameOver = true;
+	}
+	
+	void death() {
+		mDead = true;
+		mPaused = true;
 	}
 	
 	void levelCompleted() {
 		if (mCurrentLevel == mHighestReachedLevel) {
 			mHighestReachedLevel++;
 		}
-		mGameOver = true;
+		mLevelCompleted = true;
 		mPaused = true;
 	}
 	
@@ -161,5 +171,13 @@ final class GameState {
 	
 	boolean getCustomMenu() {
 		return mCustomMenu;
+	}
+	
+	boolean getLevelCompleted() {
+		return mLevelCompleted;
+	}
+	
+	boolean isDead() {
+		return mDead;
 	}
 }

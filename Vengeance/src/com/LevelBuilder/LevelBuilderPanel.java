@@ -87,8 +87,10 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 		bitmapNames = JSONReader.getBitmapNames();
 		
 		String path = System.getProperty("user.dir") + "/res/images/";
+		System.out.println(gameObjects.size());
 		for (int i = 0; i < gameObjects.size(); i++) {
 			try { 
+				System.out.println(bitmapNames.get(i));
 				images.put(i, ImageIO.read(new File(path + bitmapNames.get(i) + ".png")));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -144,9 +146,9 @@ class LevelBuilderPanel extends JPanel implements Runnable, MouseListener, KeyLi
 			for (int x = 0; x < levelData.get(0).get(y).size(); x++) {
 				
 				g.setColor(new Color(
-					levelData.get(0).get(y).get(x), 
-					levelData.get(1).get(y).get(x), 
 					levelData.get(2).get(y).get(x), 
+					levelData.get(1).get(y).get(x), 
+					levelData.get(0).get(y).get(x), 
 					255));
 				
 				g.fillRect(x, y, 1, 1);

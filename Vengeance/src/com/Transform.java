@@ -110,5 +110,7 @@ class Transform {
 		return mStartingPosition;
 	}
 	
-
+	boolean idle() {
+		return !mHeadingRight && !mHeadingLeft;
+	}
 }

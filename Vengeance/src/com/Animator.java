@@ -39,5 +39,4 @@ class Animator {
 		this.mSourceRect.x = mCurrentFrame * mFrameWidth;
 		return mSourceRect;
 	}
-	
 }
